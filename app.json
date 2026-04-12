@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "OpenPostings",
+    "slug": "openpostings",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./favicon.png",
+    "platforms": [
+      "android",
+      "web"
+    ],
+    "web": {
+      "bundler": "metro",
+      "favicon": "./favicon.png"
+    }
+  }
+}

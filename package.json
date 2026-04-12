@@ -1,0 +1,41 @@
+{
+  "name": "openpostings",
+  "version": "1.0.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "server": "node server/index.js",
+    "mcp:apply-agent": "node server/mcp-apply-server.js",
+    "start": "expo start",
+    "web": "expo start --web",
+    "android": "expo start --android",
+    "windows": "npx @react-native-community/cli run-windows",
+    "test:windows": "jest --config jest.config.windows.js",
+    "test:backend": "node --check server/index.js && node --check server/mcp-apply-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@react-native-community/netinfo": "^12.0.1",
+    "babel-preset-expo": "~54.0.10",
+    "cors": "^2.8.6",
+    "expo": "~54.0.0",
+    "express": "^5.2.1",
+    "react": "^19.1.4",
+    "react-dom": "^19.1.4",
+    "react-native": "0.81.0",
+    "react-native-web": "^0.21.0",
+    "react-native-windows": "^0.81.12",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "@rnx-kit/jest-preset": "^0.1.17"
+  },
+  "react-native-windows": {
+    "init-windows": {
+      "name": "openpostings",
+      "namespace": "openpostings",
+      "template": "cpp-app"
+    }
+  }
+}
