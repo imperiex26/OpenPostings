@@ -32,7 +32,6 @@ export function fetchPostings(search = "", limit = 500, offset = 0, filters = {}
   const atsSingle = !Array.isArray(filters?.ats) ? String(filters?.ats || "").trim().toLowerCase() : "";
   const industries = Array.isArray(filters?.industries) ? filters.industries.filter(Boolean) : [];
   const states = Array.isArray(filters?.states) ? filters.states.filter(Boolean) : [];
-  const counties = Array.isArray(filters?.counties) ? filters.counties.filter(Boolean) : [];
   const remote = String(filters?.remote || "all").trim().toLowerCase();
 
   if (atsArray.length > 0) {
@@ -45,9 +44,6 @@ export function fetchPostings(search = "", limit = 500, offset = 0, filters = {}
   }
   if (states.length > 0) {
     params.set("states", states.join(","));
-  }
-  if (counties.length > 0) {
-    params.set("counties", counties.join(","));
   }
   if (remote && remote !== "all") {
     params.set("remote", remote);
@@ -144,9 +140,6 @@ export function fetchMcpCandidates(filters = {}) {
   }
   if (Array.isArray(filters?.states) && filters.states.length > 0) {
     params.set("states", filters.states.filter(Boolean).join(","));
-  }
-  if (Array.isArray(filters?.counties) && filters.counties.length > 0) {
-    params.set("counties", filters.counties.filter(Boolean).join(","));
   }
   if (filters?.remote) params.set("remote", String(filters.remote));
   if (filters?.include_applied !== undefined) {

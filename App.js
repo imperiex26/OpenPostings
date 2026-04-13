@@ -217,7 +217,6 @@ function createDefaultMcpSettings() {
     preferred_remote: "all",
     preferred_industries: [],
     preferred_states: [],
-    preferred_counties: [],
     instructions_for_agent: ""
   };
 }
@@ -249,7 +248,6 @@ function toFormMcpSettings(value) {
       source.preferred_remote === "remote" || source.preferred_remote === "non_remote" ? source.preferred_remote : "all",
     preferred_industries: Array.isArray(source.preferred_industries) ? source.preferred_industries.filter(Boolean) : [],
     preferred_states: Array.isArray(source.preferred_states) ? source.preferred_states.filter(Boolean) : [],
-    preferred_counties: Array.isArray(source.preferred_counties) ? source.preferred_counties.filter(Boolean) : [],
     instructions_for_agent: String(source.instructions_for_agent || "")
   };
 }
@@ -274,7 +272,6 @@ function toApiMcpSettings(value) {
       source.preferred_remote === "remote" || source.preferred_remote === "non_remote" ? source.preferred_remote : "all",
     preferred_industries: Array.isArray(source.preferred_industries) ? source.preferred_industries.filter(Boolean) : [],
     preferred_states: Array.isArray(source.preferred_states) ? source.preferred_states.filter(Boolean) : [],
-    preferred_counties: Array.isArray(source.preferred_counties) ? source.preferred_counties.filter(Boolean) : [],
     instructions_for_agent: String(source.instructions_for_agent || "").trim()
   };
 }
@@ -501,14 +498,12 @@ export default function App() {
     ats: "all",
     industries: [],
     states: [],
-    counties: [],
     remote: "all"
   });
   const [postingFilterOptions, setPostingFilterOptions] = useState({
     ats: DEFAULT_ATS_FILTER_OPTIONS,
     industries: [],
-    states: [],
-    counties: []
+    states: []
   });
   const [postingFilterOptionsLoading, setPostingFilterOptionsLoading] = useState(false);
   const [postingsFilterPanelOpen, setPostingsFilterPanelOpen] = useState(false);
@@ -553,17 +548,6 @@ export default function App() {
     ],
     []
   );
-  const visibleCountyOptions = useMemo(() => {
-    const selectedStates = postingsFilters.states || [];
-    if (selectedStates.length === 0) return postingFilterOptions.counties || [];
-    return (postingFilterOptions.counties || []).filter((county) => selectedStates.includes(county?.state));
-  }, [postingFilterOptions.counties, postingsFilters.states]);
-  const visibleMcpCountyOptions = useMemo(() => {
-    const selectedStates = mcpSettings.preferred_states || [];
-    if (selectedStates.length === 0) return postingFilterOptions.counties || [];
-    return (postingFilterOptions.counties || []).filter((county) => selectedStates.includes(county?.state));
-  }, [mcpSettings.preferred_states, postingFilterOptions.counties]);
-
   const statusText = useMemo(() => {
     if (!status) return "No sync status yet.";
     const syncTime = status.last_sync_at
@@ -608,8 +592,7 @@ export default function App() {
       setPostingFilterOptions({
         ats: mergeAtsFilterOptions(response?.ats),
         industries: Array.isArray(response?.industries) ? response.industries : [],
-        states: Array.isArray(response?.states) ? response.states : [],
-        counties: Array.isArray(response?.counties) ? response.counties : []
+        states: Array.isArray(response?.states) ? response.states : []
       });
     } catch (e) {
       setError(String(e.message || e));
@@ -909,31 +892,9 @@ export default function App() {
         nextStates.add(value);
       }
 
-      const nextStateValues = Array.from(nextStates);
-      const nextCounties = prev.counties.filter((countyValue) => {
-        const [stateCode] = String(countyValue || "").split("|");
-        return !stateCode || nextStateValues.includes(stateCode);
-      });
-
       return {
         ...prev,
-        states: nextStateValues,
-        counties: nextCounties
-      };
-    });
-  }, []);
-
-  const toggleCountyFilter = useCallback((value) => {
-    setPostingsFilters((prev) => {
-      const next = new Set(prev.counties);
-      if (next.has(value)) {
-        next.delete(value);
-      } else {
-        next.add(value);
-      }
-      return {
-        ...prev,
-        counties: Array.from(next)
+        states: Array.from(nextStates)
       };
     });
   }, []);
@@ -943,7 +904,6 @@ export default function App() {
       ats: "all",
       industries: [],
       states: [],
-      counties: [],
       remote: "all"
     });
   }, []);
@@ -972,34 +932,13 @@ export default function App() {
         nextStates.add(value);
       }
 
-      const nextStateValues = Array.from(nextStates);
-      const nextCounties = (prev.preferred_counties || []).filter((countyValue) => {
-        const [stateCode] = String(countyValue || "").split("|");
-        return !stateCode || nextStateValues.includes(stateCode);
-      });
-
       return {
         ...prev,
-        preferred_states: nextStateValues,
-        preferred_counties: nextCounties
+        preferred_states: Array.from(nextStates)
       };
     });
   }, []);
 
-  const toggleMcpCountyPreference = useCallback((value) => {
-    setMcpSettings((prev) => {
-      const next = new Set(prev.preferred_counties || []);
-      if (next.has(value)) {
-        next.delete(value);
-      } else {
-        next.add(value);
-      }
-      return {
-        ...prev,
-        preferred_counties: Array.from(next)
-      };
-    });
-  }, []);
 
   useEffect(() => {
     searchRef.current = search;
@@ -1153,25 +1092,10 @@ export default function App() {
                 onClear={() =>
                   setPostingsFilters((prev) => ({
                     ...prev,
-                    states: [],
-                    counties: []
+                    states: []
                   }))
                 }
                 emptyText="No states available."
-              />
-
-              <MultiSelectDropdown
-                label="Counties"
-                options={visibleCountyOptions}
-                selectedValues={postingsFilters.counties}
-                onToggleValue={toggleCountyFilter}
-                onClear={() =>
-                  setPostingsFilters((prev) => ({
-                    ...prev,
-                    counties: []
-                  }))
-                }
-                emptyText="No counties match selected states."
               />
             </>
           )}
@@ -1613,25 +1537,10 @@ export default function App() {
             onClear={() =>
               setMcpSettings((prev) => ({
                 ...prev,
-                preferred_states: [],
-                preferred_counties: []
+                preferred_states: []
               }))
             }
             emptyText="No states available."
-          />
-
-          <MultiSelectDropdown
-            label="Preferred Counties"
-            options={visibleMcpCountyOptions}
-            selectedValues={mcpSettings.preferred_counties}
-            onToggleValue={toggleMcpCountyPreference}
-            onClear={() =>
-              setMcpSettings((prev) => ({
-                ...prev,
-                preferred_counties: []
-              }))
-            }
-            emptyText="No counties match selected states."
           />
         </View>
 

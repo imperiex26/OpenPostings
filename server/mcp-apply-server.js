@@ -139,57 +139,42 @@ const SALES_EXCLUSIVE_ROLE_REGEX =
   /\b(account executive|account manager|business development|brand ambassador|inside sales|outside sales|sales representative|sales manager|sales director|sales consultant|sales specialist|sales associate|sales advisor|presales?|telesales|territory manager|channel sales|partner sales|salesperson|salesman|salesworker|sales(?!force\b))\b/i;
 
 const STATE_CODE_TO_NAME = {
-  AL: "alabama",
-  AK: "alaska",
-  AZ: "arizona",
-  AR: "arkansas",
-  CA: "california",
-  CO: "colorado",
-  CT: "connecticut",
-  DE: "delaware",
-  FL: "florida",
-  GA: "georgia",
-  HI: "hawaii",
-  ID: "idaho",
-  IL: "illinois",
-  IN: "indiana",
-  IA: "iowa",
-  KS: "kansas",
-  KY: "kentucky",
-  LA: "louisiana",
-  ME: "maine",
-  MD: "maryland",
-  MA: "massachusetts",
-  MI: "michigan",
-  MN: "minnesota",
-  MS: "mississippi",
-  MO: "missouri",
-  MT: "montana",
-  NE: "nebraska",
-  NV: "nevada",
-  NH: "new hampshire",
-  NJ: "new jersey",
-  NM: "new mexico",
-  NY: "new york",
-  NC: "north carolina",
-  ND: "north dakota",
-  OH: "ohio",
-  OK: "oklahoma",
-  OR: "oregon",
-  PA: "pennsylvania",
-  RI: "rhode island",
-  SC: "south carolina",
-  SD: "south dakota",
-  TN: "tennessee",
-  TX: "texas",
-  UT: "utah",
-  VT: "vermont",
-  VA: "virginia",
-  WA: "washington",
-  WV: "west virginia",
-  WI: "wisconsin",
-  WY: "wyoming",
-  DC: "district of columbia"
+  AP: "andhra pradesh",
+  AR: "arunachal pradesh",
+  AS: "assam",
+  BR: "bihar",
+  CG: "chhattisgarh",
+  GA: "goa",
+  GJ: "gujarat",
+  HR: "haryana",
+  HP: "himachal pradesh",
+  JH: "jharkhand",
+  KA: "karnataka",
+  KL: "kerala",
+  MP: "madhya pradesh",
+  MH: "maharashtra",
+  MN: "manipur",
+  ML: "meghalaya",
+  MZ: "mizoram",
+  NL: "nagaland",
+  OD: "odisha",
+  PB: "punjab",
+  RJ: "rajasthan",
+  SK: "sikkim",
+  TN: "tamil nadu",
+  TS: "telangana",
+  TR: "tripura",
+  UP: "uttar pradesh",
+  UK: "uttarakhand",
+  WB: "west bengal",
+  AN: "andaman and nicobar islands",
+  CH: "chandigarh",
+  DN: "dadra and nagar haveli and daman and diu",
+  DL: "delhi",
+  JK: "jammu and kashmir",
+  LA: "ladakh",
+  LD: "lakshadweep",
+  PY: "puducherry"
 };
 
 const MCP_SETTINGS_DEFAULTS = {
@@ -206,7 +191,6 @@ const MCP_SETTINGS_DEFAULTS = {
   preferred_remote: "all",
   preferred_industries: [],
   preferred_states: [],
-  preferred_counties: [],
   instructions_for_agent: ""
 };
 const ATS_FILTER_OPTIONS = new Set([
@@ -305,34 +289,6 @@ function normalizeAtsFilters(value) {
   return Array.from(new Set(items));
 }
 
-function normalizeCountyName(value) {
-  return normalizeLikeText(value)
-    .replace(/\b(county|parish|borough|census area|municipality)\b/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function parseCountyFilters(values) {
-  const parsed = [];
-  for (const rawValue of values || []) {
-    const value = String(rawValue || "").trim();
-    if (!value) continue;
-
-    if (value.includes("|")) {
-      const [stateRaw, countyRaw] = value.split("|");
-      const stateCode = String(stateRaw || "").trim().toUpperCase();
-      const countyLikePart = normalizeCountyName(countyRaw);
-      if (!countyLikePart) continue;
-      parsed.push({ stateCode, countyLikePart });
-      continue;
-    }
-
-    const countyLikePart = normalizeCountyName(value);
-    if (!countyLikePart) continue;
-    parsed.push({ stateCode: "", countyLikePart });
-  }
-  return parsed;
-}
 
 function createLikeParts(value) {
   const normalized = normalizeLikeText(value);
@@ -369,42 +325,14 @@ function hasStateLikeMatch(locationText, stateCode) {
   return normalizeLikeText(locationText).includes(stateName);
 }
 
-function rowMatchesLocationFilters(locationText, selectedStateCodes, countyFilters) {
+function rowMatchesLocationFilters(locationText, selectedStateCodes) {
   const stateCodes = Array.isArray(selectedStateCodes) ? selectedStateCodes : [];
-  const counties = Array.isArray(countyFilters) ? countyFilters : [];
-  if (stateCodes.length === 0 && counties.length === 0) return true;
+  if (stateCodes.length === 0) return true;
 
   const location = String(locationText || "").trim();
   if (!location) return false;
-  const normalizedLocation = normalizeLikeText(location);
 
-  if (stateCodes.length > 0) {
-    const hasSelectedState = stateCodes.some((stateCode) => hasStateLikeMatch(location, stateCode));
-    if (!hasSelectedState) return false;
-  }
-
-  if (counties.length > 0) {
-    const matchesCounty = counties.some((countyFilter) => {
-      const countyLikePart = String(countyFilter?.countyLikePart || "").trim();
-      if (!countyLikePart) return false;
-
-      if (countyFilter.stateCode && !hasStateLikeMatch(location, countyFilter.stateCode)) {
-        return false;
-      }
-
-      return (
-        normalizedLocation.includes(countyLikePart) ||
-        normalizedLocation.includes(`${countyLikePart} county`) ||
-        normalizedLocation.includes(`${countyLikePart} parish`) ||
-        normalizedLocation.includes(`${countyLikePart} borough`) ||
-        normalizedLocation.includes(`${countyLikePart} census area`)
-      );
-    });
-
-    if (!matchesCounty) return false;
-  }
-
-  return true;
+  return stateCodes.some((stateCode) => hasStateLikeMatch(location, stateCode));
 }
 
 function isRemoteLocation(locationText) {
@@ -505,7 +433,6 @@ async function ensureTables() {
       preferred_remote TEXT NOT NULL DEFAULT 'all',
       preferred_industries TEXT NOT NULL DEFAULT '[]',
       preferred_states TEXT NOT NULL DEFAULT '[]',
-      preferred_counties TEXT NOT NULL DEFAULT '[]',
       instructions_for_agent TEXT NOT NULL DEFAULT '',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -546,9 +473,8 @@ async function ensureTables() {
       preferred_remote,
       preferred_industries,
       preferred_states,
-      preferred_counties,
       instructions_for_agent
-    ) VALUES (1, 0, 'OpenPostings Agent', '', '', '', 1, 1, 10, '', 'all', '[]', '[]', '[]', '')
+    ) VALUES (1, 0, 'OpenPostings Agent', '', '', '', 1, 1, 10, '', 'all', '[]', '[]', '')
     ON CONFLICT(id) DO NOTHING;
   `);
 
@@ -649,7 +575,6 @@ async function getMcpSettings() {
         preferred_remote,
         preferred_industries,
         preferred_states,
-        preferred_counties,
         instructions_for_agent
       FROM McpSettings
       WHERE id = 1
@@ -674,7 +599,6 @@ async function getMcpSettings() {
     preferred_remote: normalizeRemoteFilter(row?.preferred_remote),
     preferred_industries: parseJsonArray(row?.preferred_industries),
     preferred_states: parseJsonArray(row?.preferred_states).map((state) => state.toUpperCase()),
-    preferred_counties: parseJsonArray(row?.preferred_counties),
     instructions_for_agent: String(row?.instructions_for_agent || "")
   };
 }
@@ -992,10 +916,6 @@ async function findCandidates(options = {}) {
       : settings.preferred_industries || [];
   const states =
     Array.isArray(options.states) && options.states.length > 0 ? options.states : settings.preferred_states || [];
-  const counties =
-    Array.isArray(options.counties) && options.counties.length > 0
-      ? options.counties
-      : settings.preferred_counties || [];
   const remote = options.remote ? normalizeRemoteFilter(options.remote) : settings.preferred_remote;
   const search = String(options.search || settings.preferred_search || "").trim().toLowerCase();
   const includeApplied = normalizeBoolean(options.include_applied, false);
@@ -1013,7 +933,6 @@ async function findCandidates(options = {}) {
   );
 
   const industryMatchersByKey = await buildIndustryMatchersByKey(industries);
-  const countyFilters = parseCountyFilters(counties);
   const searchTerms = search.split(/\s+/).filter(Boolean);
   const stateCodes = states.map((state) => String(state || "").trim().toUpperCase()).filter(Boolean);
 
@@ -1043,7 +962,7 @@ async function findCandidates(options = {}) {
       );
       if (!matchesIndustry) return false;
 
-      const matchesLocation = rowMatchesLocationFilters(row?.location, stateCodes, countyFilters);
+      const matchesLocation = rowMatchesLocationFilters(row?.location, stateCodes);
       if (!matchesLocation) return false;
 
       const matchesRemote = rowMatchesRemoteFilter(row?.location, remote);
@@ -1077,7 +996,6 @@ async function findCandidates(options = {}) {
       ats: atsFilters,
       industries,
       states: stateCodes,
-      counties,
       remote
     },
     count: items.length,
@@ -1408,7 +1326,6 @@ async function main() {
           .optional(),
         industries: z.array(z.string()).optional(),
         states: z.array(z.string()).optional(),
-        counties: z.array(z.string()).optional(),
         remote: z.enum(["all", "remote", "non_remote"]).optional(),
         include_applied: z.boolean().optional(),
         limit: z.number().int().positive().max(2000).optional()

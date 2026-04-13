@@ -250,57 +250,42 @@ const IT_SALES_GTM_ROLE_REGEX =
 const SALES_EXCLUSIVE_ROLE_REGEX =
   /\b(account executive|account manager|business development|brand ambassador|inside sales|outside sales|sales representative|sales manager|sales director|sales consultant|sales specialist|sales associate|sales advisor|presales?|telesales|territory manager|channel sales|partner sales|salesperson|salesman|salesworker|sales(?!force\b))\b/i;
 const STATE_CODE_TO_NAME = {
-  AL: "alabama",
-  AK: "alaska",
-  AZ: "arizona",
-  AR: "arkansas",
-  CA: "california",
-  CO: "colorado",
-  CT: "connecticut",
-  DE: "delaware",
-  FL: "florida",
-  GA: "georgia",
-  HI: "hawaii",
-  ID: "idaho",
-  IL: "illinois",
-  IN: "indiana",
-  IA: "iowa",
-  KS: "kansas",
-  KY: "kentucky",
-  LA: "louisiana",
-  ME: "maine",
-  MD: "maryland",
-  MA: "massachusetts",
-  MI: "michigan",
-  MN: "minnesota",
-  MS: "mississippi",
-  MO: "missouri",
-  MT: "montana",
-  NE: "nebraska",
-  NV: "nevada",
-  NH: "new hampshire",
-  NJ: "new jersey",
-  NM: "new mexico",
-  NY: "new york",
-  NC: "north carolina",
-  ND: "north dakota",
-  OH: "ohio",
-  OK: "oklahoma",
-  OR: "oregon",
-  PA: "pennsylvania",
-  RI: "rhode island",
-  SC: "south carolina",
-  SD: "south dakota",
-  TN: "tennessee",
-  TX: "texas",
-  UT: "utah",
-  VT: "vermont",
-  VA: "virginia",
-  WA: "washington",
-  WV: "west virginia",
-  WI: "wisconsin",
-  WY: "wyoming",
-  DC: "district of columbia"
+  AP: "andhra pradesh",
+  AR: "arunachal pradesh",
+  AS: "assam",
+  BR: "bihar",
+  CG: "chhattisgarh",
+  GA: "goa",
+  GJ: "gujarat",
+  HR: "haryana",
+  HP: "himachal pradesh",
+  JH: "jharkhand",
+  KA: "karnataka",
+  KL: "kerala",
+  MP: "madhya pradesh",
+  MH: "maharashtra",
+  MN: "manipur",
+  ML: "meghalaya",
+  MZ: "mizoram",
+  NL: "nagaland",
+  OD: "odisha",
+  PB: "punjab",
+  RJ: "rajasthan",
+  SK: "sikkim",
+  TN: "tamil nadu",
+  TS: "telangana",
+  TR: "tripura",
+  UP: "uttar pradesh",
+  UK: "uttarakhand",
+  WB: "west bengal",
+  AN: "andaman and nicobar islands",
+  CH: "chandigarh",
+  DN: "dadra and nagar haveli and daman and diu",
+  DL: "delhi",
+  JK: "jammu and kashmir",
+  LA: "ladakh",
+  LD: "lakshadweep",
+  PY: "puducherry"
 };
 const APPLICATION_STATUS_OPTIONS = new Set([
   "applied",
@@ -340,7 +325,6 @@ const MCP_SETTINGS_DEFAULTS = {
   preferred_remote: "all",
   preferred_industries: [],
   preferred_states: [],
-  preferred_counties: [],
   instructions_for_agent: ""
 };
 const PHRASE_NGRAM_INDUSTRY_COVERAGE_THRESHOLD = 2;
@@ -403,35 +387,6 @@ function buildWordNgrams(words, minSize = 2, maxSize = 3) {
     }
   }
   return ngrams;
-}
-
-function normalizeCountyName(value) {
-  return normalizeLikeText(value)
-    .replace(/\b(county|parish|borough|census area|municipality)\b/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function parseCountyFilters(values) {
-  const parsed = [];
-  for (const rawValue of values) {
-    const value = String(rawValue || "").trim();
-    if (!value) continue;
-
-    if (value.includes("|")) {
-      const [stateRaw, countyRaw] = value.split("|");
-      const stateCode = String(stateRaw || "").trim().toUpperCase();
-      const countyLikePart = normalizeCountyName(countyRaw);
-      if (!countyLikePart) continue;
-      parsed.push({ stateCode, countyLikePart });
-      continue;
-    }
-
-    const countyLikePart = normalizeCountyName(value);
-    if (!countyLikePart) continue;
-    parsed.push({ stateCode: "", countyLikePart });
-  }
-  return parsed;
 }
 
 function hasStateLikeMatch(locationText, stateCode) {
@@ -727,42 +682,14 @@ function rowMatchesIndustryLikeParts(positionName, selectedIndustryKeys, industr
 
   return false;
 }
-function rowMatchesLocationFilters(locationText, selectedStateCodes, countyFilters) {
+function rowMatchesLocationFilters(locationText, selectedStateCodes) {
   const stateCodes = Array.isArray(selectedStateCodes) ? selectedStateCodes : [];
-  const counties = Array.isArray(countyFilters) ? countyFilters : [];
-  if (stateCodes.length === 0 && counties.length === 0) return true;
+  if (stateCodes.length === 0) return true;
 
   const location = String(locationText || "").trim();
   if (!location) return false;
-  const normalizedLocation = normalizeLikeText(location);
 
-  if (stateCodes.length > 0) {
-    const hasSelectedState = stateCodes.some((stateCode) => hasStateLikeMatch(location, stateCode));
-    if (!hasSelectedState) return false;
-  }
-
-  if (counties.length > 0) {
-    const matchesCounty = counties.some((countyFilter) => {
-      const countyLikePart = String(countyFilter?.countyLikePart || "").trim();
-      if (!countyLikePart) return false;
-
-      if (countyFilter.stateCode && !hasStateLikeMatch(location, countyFilter.stateCode)) {
-        return false;
-      }
-
-      return (
-        normalizedLocation.includes(countyLikePart) ||
-        normalizedLocation.includes(`${countyLikePart} county`) ||
-        normalizedLocation.includes(`${countyLikePart} parish`) ||
-        normalizedLocation.includes(`${countyLikePart} borough`) ||
-        normalizedLocation.includes(`${countyLikePart} census area`)
-      );
-    });
-
-    if (!matchesCounty) return false;
-  }
-
-  return true;
+  return stateCodes.some((stateCode) => hasStateLikeMatch(location, stateCode));
 }
 
 function rowMatchesRemoteFilter(locationText, remoteFilter) {
@@ -926,7 +853,6 @@ function normalizeMcpSettingsInput(value = {}) {
     preferred_remote: normalizeMcpRemotePreference(source.preferred_remote),
     preferred_industries: parseJsonArray(source.preferred_industries),
     preferred_states: parseJsonArray(source.preferred_states).map((state) => state.toUpperCase()),
-    preferred_counties: parseJsonArray(source.preferred_counties),
     instructions_for_agent: String(source.instructions_for_agent ?? MCP_SETTINGS_DEFAULTS.instructions_for_agent).trim()
   };
 }
@@ -3309,7 +3235,6 @@ async function ensureApplicationsTable() {
       preferred_remote TEXT NOT NULL DEFAULT 'all',
       preferred_industries TEXT NOT NULL DEFAULT '[]',
       preferred_states TEXT NOT NULL DEFAULT '[]',
-      preferred_counties TEXT NOT NULL DEFAULT '[]',
       instructions_for_agent TEXT NOT NULL DEFAULT '',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -3332,9 +3257,8 @@ async function ensureApplicationsTable() {
         preferred_remote,
         preferred_industries,
         preferred_states,
-        preferred_counties,
         instructions_for_agent
-      ) VALUES (1, 0, ?, '', '', '', 1, 1, 10, '', 'all', '[]', '[]', '[]', '')
+      ) VALUES (1, 0, ?, '', '', '', 1, 1, 10, '', 'all', '[]', '[]', '')
       ON CONFLICT(id) DO NOTHING;
     `,
     [MCP_SETTINGS_DEFAULTS.preferred_agent_name]
@@ -3394,7 +3318,6 @@ async function getMcpSettings() {
         preferred_remote,
         preferred_industries,
         preferred_states,
-        preferred_counties,
         instructions_for_agent
       FROM McpSettings
       WHERE id = 1
@@ -3417,7 +3340,6 @@ async function getMcpSettings() {
     preferred_remote: row?.preferred_remote,
     preferred_industries: parseJsonArray(row?.preferred_industries),
     preferred_states: parseJsonArray(row?.preferred_states),
-    preferred_counties: parseJsonArray(row?.preferred_counties),
     instructions_for_agent: row?.instructions_for_agent
   });
 
@@ -3443,10 +3365,9 @@ async function upsertMcpSettings(input) {
         preferred_remote,
         preferred_industries,
         preferred_states,
-        preferred_counties,
         instructions_for_agent,
         updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
       ON CONFLICT(id) DO UPDATE SET
         enabled = excluded.enabled,
         preferred_agent_name = excluded.preferred_agent_name,
@@ -3461,7 +3382,6 @@ async function upsertMcpSettings(input) {
         preferred_remote = excluded.preferred_remote,
         preferred_industries = excluded.preferred_industries,
         preferred_states = excluded.preferred_states,
-        preferred_counties = excluded.preferred_counties,
         instructions_for_agent = excluded.instructions_for_agent,
         updated_at = datetime('now');
     `,
@@ -3480,7 +3400,6 @@ async function upsertMcpSettings(input) {
       normalized.preferred_remote,
       JSON.stringify(normalized.preferred_industries || []),
       JSON.stringify(normalized.preferred_states || []),
-      JSON.stringify(normalized.preferred_counties || []),
       normalized.instructions_for_agent
     ]
   );
@@ -3652,7 +3571,6 @@ async function listPostingsWithFilters(options = {}) {
   const atsFilters = normalizeAtsFilters(options?.ats || []);
   const industryKeys = normalizeStringArray(options?.industries).map((key) => normalizeLikeText(key));
   const stateCodes = normalizeStringArray(options?.states).map((state) => state.toUpperCase());
-  const countyFilters = parseCountyFilters(normalizeStringArray(options?.counties));
   const remoteFilter = normalizeRemoteFilter(options?.remote);
   const includeApplied = normalizeBoolean(options?.include_applied, true);
   const includeIgnored = normalizeBoolean(options?.include_ignored, false);
@@ -3660,7 +3578,6 @@ async function listPostingsWithFilters(options = {}) {
     atsFilters.length > 0 ||
     industryKeys.length > 0 ||
     stateCodes.length > 0 ||
-    countyFilters.length > 0 ||
     remoteFilter !== "all";
 
   let rows = [];
@@ -3735,7 +3652,7 @@ async function listPostingsWithFilters(options = {}) {
       );
       if (!matchesIndustry) return false;
 
-      const matchesLocation = rowMatchesLocationFilters(row?.location, stateCodes, countyFilters);
+      const matchesLocation = rowMatchesLocationFilters(row?.location, stateCodes);
       if (!matchesLocation) return false;
 
       const matchesRemote = rowMatchesRemoteFilter(row?.location, remoteFilter);
@@ -3766,9 +3683,6 @@ async function listPostingsWithFilters(options = {}) {
       sort_by: sortBy,
       industries: industryKeys,
       states: stateCodes,
-      counties: countyFilters.map((filter) =>
-        filter?.stateCode ? `${filter.stateCode}|${filter.countyLikePart}` : filter.countyLikePart
-      ),
       remote: remoteFilter,
       include_ignored: includeIgnored
     }
@@ -4511,7 +4425,6 @@ function createServer() {
   app.post("/sync/ats", handleSyncRequest);
 
   app.get("/postings/filter-options", async (req, res) => {
-    const selectedStates = parseCsvParam(req.query.states).map((state) => state.toUpperCase());
     const ats = [
       { value: "workday", label: "Workday" },
       { value: "ashby", label: "Ashby" },
@@ -4573,56 +4486,11 @@ function createServer() {
       states = [];
     }
 
-    let counties = [];
-    try {
-      let countyRows = [];
-      if (selectedStates.length === 0) {
-        countyRows = await db.all(
-          `
-            SELECT DISTINCT state_usps, search_location_name
-            FROM state_location_index
-            WHERE location_type = 'county'
-              AND search_location_name IS NOT NULL
-              AND TRIM(search_location_name) <> ''
-            ORDER BY state_usps ASC, search_location_name ASC;
-          `
-        );
-      } else {
-        const placeholders = selectedStates.map(() => "?").join(", ");
-        countyRows = await db.all(
-          `
-            SELECT DISTINCT state_usps, search_location_name
-            FROM state_location_index
-            WHERE location_type = 'county'
-              AND search_location_name IS NOT NULL
-              AND TRIM(search_location_name) <> ''
-              AND state_usps IN (${placeholders})
-            ORDER BY state_usps ASC, search_location_name ASC;
-          `,
-          selectedStates
-        );
-      }
-
-      counties = countyRows.map((row) => {
-        const stateCode = String(row?.state_usps || "").trim().toUpperCase();
-        const countyName = String(row?.search_location_name || "").trim();
-        return {
-          value: `${stateCode}|${countyName}`,
-          label: `${countyName} (${stateCode})`,
-          state: stateCode,
-          county: countyName
-        };
-      });
-    } catch {
-      counties = [];
-    }
-
     res.json({
       ats,
       sort_options,
       industries,
-      states,
-      counties
+      states
     });
   });
 
@@ -4669,7 +4537,6 @@ function createServer() {
     const overrideAts = parseCsvParam(req.query.ats);
     const overrideIndustries = parseCsvParam(req.query.industries);
     const overrideStates = parseCsvParam(req.query.states);
-    const overrideCounties = parseCsvParam(req.query.counties);
     const overrideRemote = normalizeRemoteFilter(req.query.remote);
     const includeApplied = normalizeBoolean(req.query.include_applied, false);
 
@@ -4694,12 +4561,6 @@ function createServer() {
         : useSettings
           ? normalizeStringArray(settings?.preferred_states)
           : [];
-    const counties =
-      overrideCounties.length > 0
-        ? overrideCounties
-        : useSettings
-          ? normalizeStringArray(settings?.preferred_counties)
-          : [];
     const remote = req.query.remote ? overrideRemote : useSettings ? settings?.preferred_remote : "all";
 
     const result = await listPostingsWithFilters({
@@ -4709,7 +4570,6 @@ function createServer() {
       ats,
       industries,
       states,
-      counties,
       remote,
       include_applied: includeApplied
     });
@@ -4955,7 +4815,6 @@ function createServer() {
       ats: parseCsvParam(req.query.ats),
       industries: parseCsvParam(req.query.industries),
       states: parseCsvParam(req.query.states),
-      counties: parseCsvParam(req.query.counties),
       remote: req.query.remote,
       include_applied: normalizeBoolean(req.query.include_applied, true),
       include_ignored: normalizeBoolean(req.query.include_ignored, false)
