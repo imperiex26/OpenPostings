@@ -4,7 +4,13 @@
 
 OpenPostings is an OpenSource ATS job aggregator and application tracking app. **It pulls jobs that were posted in the last 24 hours** or that has no posted date. 
 
+## Youtube Video
+[![OpenPostings Discussion](https://img.youtube.com/vi/5sVIhhwx3Yk/0.jpg)](https://www.youtube.com/watch?v=5sVIhhwx3Yk)
+
+## Diagram
 ![Web UI Screenshot](README-Images/webui.png)
+
+## Features
 
 It combines:
 - A React Native client (`Web`, `Android`, `Windows`)
@@ -12,7 +18,6 @@ It combines:
 - A local SQLite database
 - An MCP apply-agent server for agent-assisted workflows
 
-## Features
 
 - Pulls jobs from **multiple ATS** providers into one local database.
 - Filters postings by **search text, ATS, industry, state, county, and remote mode**.
