@@ -396,6 +396,7 @@ function MultiSelectDropdown({
             value={search}
             onChangeText={setSearch}
             placeholder={`Search ${label.toLowerCase()}`}
+            placeholderTextColor="#64748b"
             autoCapitalize="none"
           />
 
@@ -1038,6 +1039,7 @@ export default function App() {
           value={search}
           onChangeText={setSearch}
           placeholder="Search company or title"
+          placeholderTextColor="#64748b"
           autoCapitalize="none"
         />
         <Pressable onPress={runSync} style={styles.syncBtn}>
@@ -1256,6 +1258,7 @@ export default function App() {
                   value={personalInformation[field.key]}
                   onChangeText={(value) => handleChangePersonalInformation(field.key, value)}
                   placeholder={field.placeholder}
+                  placeholderTextColor="#64748b"
                   autoCapitalize={field.autoCapitalize || "none"}
                   keyboardType={field.keyboardType || "default"}
                   multiline={Boolean(field.multiline)}
@@ -1326,6 +1329,7 @@ export default function App() {
             }
             keyboardType="numeric"
             placeholder={String(DEFAULT_SYNC_INTERVAL_SECONDS)}
+            placeholderTextColor="#64748b"
           />
           <Text style={styles.settingsInlineHint}>
             Default: {DEFAULT_SYNC_INTERVAL_SECONDS} ({formatSyncIntervalLabel(DEFAULT_SYNC_INTERVAL_SECONDS)}). Minimum:{" "}
@@ -1401,6 +1405,7 @@ export default function App() {
               }))
             }
             placeholder="Codex, Claude, or OpenPostings Agent"
+            placeholderTextColor="#64748b"
           />
         </View>
 
@@ -1417,6 +1422,7 @@ export default function App() {
               }))
             }
             placeholder="agent-login@example.com"
+            placeholderTextColor="#64748b"
             keyboardType="email-address"
             autoCapitalize="none"
           />
@@ -1434,6 +1440,7 @@ export default function App() {
               }))
             }
             placeholder="Enter agent inbox password"
+            placeholderTextColor="#64748b"
             autoCapitalize="none"
             autoCorrect={false}
             secureTextEntry
@@ -1454,6 +1461,7 @@ export default function App() {
             multiline
             numberOfLines={3}
             placeholder="Example: use auth app first, fallback to backup email"
+            placeholderTextColor="#64748b"
           />
         </View>
 
@@ -1470,6 +1478,7 @@ export default function App() {
             }
             keyboardType="numeric"
             placeholder="10"
+            placeholderTextColor="#64748b"
           />
         </View>
 
@@ -1485,6 +1494,7 @@ export default function App() {
               }))
             }
             placeholder="software engineer"
+            placeholderTextColor="#64748b"
             autoCapitalize="none"
           />
         </View>
@@ -1558,6 +1568,7 @@ export default function App() {
             multiline
             numberOfLines={4}
             placeholder="Example: prioritize mid-size companies and skip relocation-only roles."
+            placeholderTextColor="#64748b"
           />
         </View>
 
@@ -1654,12 +1665,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4f6f8"
+    backgroundColor: "#0f1117"
   },
   header: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 6
+    paddingHorizontal: 18,
+    paddingTop: 14,
+    paddingBottom: 8
   },
   headerTopRow: {
     width: "100%",
@@ -1687,8 +1698,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#d3dbe4",
-    backgroundColor: "#ffffff",
+    borderColor: "#2a3040",
+    backgroundColor: "#1a1f2e",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
@@ -1697,85 +1708,85 @@ const styles = StyleSheet.create({
   hamburgerIcon: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#102a43"
+    color: "#e2e8f0"
   },
   title: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#14213d"
+    color: "#f1f5f9"
   },
   subtitle: {
     fontSize: 14,
-    color: "#4f5d75",
+    color: "#94a3b8",
     marginTop: 4
   },
   pageTitle: {
     marginTop: 10,
     fontSize: 13,
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "600"
   },
   small: {
     fontSize: 11,
-    color: "#7a8798",
+    color: "#64748b",
     marginTop: 2
   },
   controls: {
     flexDirection: "row",
     gap: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 10
   },
   postingsFiltersHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingBottom: 6
   },
   postingsFiltersToggleBtn: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
-    backgroundColor: "#ffffff",
+    borderColor: "#2a3040",
+    backgroundColor: "#1a1f2e",
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8
   },
   postingsFiltersToggleText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "600",
     fontSize: 12
   },
   postingsFiltersClearBtn: {
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#1a1f2e"
   },
   postingsFiltersClearText: {
-    color: "#7a8798",
+    color: "#64748b",
     fontSize: 12,
     fontWeight: "600"
   },
   postingsFiltersPanel: {
-    marginHorizontal: 16,
+    marginHorizontal: 18,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
-    borderRadius: 12,
-    backgroundColor: "#ffffff",
-    padding: 10
+    borderColor: "#2a3040",
+    borderRadius: 14,
+    backgroundColor: "#1a1f2e",
+    padding: 12
   },
   dropdownWrap: {
     marginBottom: 10
   },
   dropdownTrigger: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#f8fafc",
+    backgroundColor: "#141821",
     paddingHorizontal: 12,
     paddingVertical: 10,
     flexDirection: "row",
@@ -1785,28 +1796,29 @@ const styles = StyleSheet.create({
   dropdownTriggerLabel: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#334e68"
+    color: "#cbd5e1"
   },
   dropdownTriggerValue: {
     fontSize: 12,
-    color: "#52606d",
+    color: "#94a3b8",
     fontWeight: "600"
   },
   dropdownPanel: {
     marginTop: 8,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1a1f2e",
     padding: 8
   },
   dropdownSearch: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#141821",
     height: 40,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    color: "#e2e8f0"
   },
   dropdownOptionsScroll: {
     maxHeight: 180,
@@ -1814,27 +1826,27 @@ const styles = StyleSheet.create({
   },
   dropdownOption: {
     borderWidth: 1,
-    borderColor: "#edf2f7",
+    borderColor: "#232938",
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 8,
     marginBottom: 6,
-    backgroundColor: "#f8fafc"
+    backgroundColor: "#141821"
   },
   dropdownOptionSelected: {
-    borderColor: "#0b6e4f",
-    backgroundColor: "#e8f6ef"
+    borderColor: "#10b981",
+    backgroundColor: "#0d2d22"
   },
   dropdownOptionLabel: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontSize: 12
   },
   dropdownOptionLabelSelected: {
-    color: "#0b6e4f",
+    color: "#34d399",
     fontWeight: "700"
   },
   dropdownEmpty: {
-    color: "#7a8798",
+    color: "#64748b",
     fontSize: 12,
     paddingVertical: 8,
     paddingHorizontal: 4
@@ -1842,14 +1854,14 @@ const styles = StyleSheet.create({
   dropdownClearBtn: {
     marginTop: 4,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 8,
     paddingVertical: 8,
     alignItems: "center",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#141821"
   },
   dropdownClearBtnText: {
-    color: "#52606d",
+    color: "#94a3b8",
     fontSize: 12,
     fontWeight: "600"
   },
@@ -1863,18 +1875,18 @@ const styles = StyleSheet.create({
   },
   remoteFilterChip: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
-    backgroundColor: "#ffffff",
+    borderColor: "#2a3040",
+    backgroundColor: "#1a1f2e",
     borderRadius: 999,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     paddingVertical: 8
   },
   remoteFilterChipActive: {
-    borderColor: "#102a43",
-    backgroundColor: "#102a43"
+    borderColor: "#10b981",
+    backgroundColor: "#10b981"
   },
   remoteFilterChipText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontSize: 12,
     fontWeight: "600"
   },
@@ -1884,14 +1896,15 @@ const styles = StyleSheet.create({
   search: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#1a1f2e",
     paddingHorizontal: 12,
-    height: 42
+    height: 42,
+    color: "#e2e8f0"
   },
   syncBtn: {
-    backgroundColor: "#0b6e4f",
+    backgroundColor: "#10b981",
     borderRadius: 10,
     paddingHorizontal: 14,
     justifyContent: "center"
@@ -1901,66 +1914,66 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   status: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     fontSize: 12,
-    color: "#334e68"
+    color: "#94a3b8"
   },
   error: {
-    marginHorizontal: 16,
+    marginHorizontal: 18,
     marginTop: 2,
-    color: "#b00020",
+    color: "#f87171",
     fontSize: 13
   },
   loader: {
     marginTop: 20
   },
   list: {
-    padding: 12,
+    padding: 14,
     gap: 10
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 12,
+    backgroundColor: "#1a1f2e",
+    borderRadius: 14,
+    padding: 14,
     borderWidth: 1,
-    borderColor: "#dbe2ea"
+    borderColor: "#2a3040"
   },
   position: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#102a43"
+    color: "#f1f5f9"
   },
   location: {
     marginTop: 4,
     fontSize: 12,
-    color: "#486581"
+    color: "#94a3b8"
   },
   company: {
     marginTop: 4,
     fontSize: 14,
-    color: "#334e68"
+    color: "#cbd5e1"
   },
   ats: {
     marginTop: 3,
     fontSize: 12,
-    color: "#243b53",
+    color: "#e2e8f0",
     fontWeight: "600"
   },
   posted: {
     marginTop: 2,
     fontSize: 12,
-    color: "#486581"
+    color: "#94a3b8"
   },
   postingAppliedNotice: {
     marginTop: 6,
     fontSize: 12,
-    color: "#0b6e4f",
+    color: "#34d399",
     fontWeight: "600"
   },
   url: {
     marginTop: 6,
     fontSize: 11,
-    color: "#7b8794"
+    color: "#64748b"
   },
   postingCardTopRow: {
     flexDirection: "row",
@@ -1977,18 +1990,18 @@ const styles = StyleSheet.create({
   },
   postingCardMenuTrigger: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 8,
     minWidth: 34,
     height: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#1a1f2e"
   },
   postingCardMenuTriggerText: {
     fontSize: 18,
     lineHeight: 20,
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "700"
   },
   postingCardMenu: {
@@ -1997,25 +2010,25 @@ const styles = StyleSheet.create({
     right: 0,
     minWidth: 190,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
-    borderRadius: 10,
-    backgroundColor: "#ffffff",
+    borderColor: "#2a3040",
+    borderRadius: 12,
+    backgroundColor: "#1e2433",
     padding: 6
   },
   postingCardMenuItem: {
     borderWidth: 1,
-    borderColor: "#edf2f7",
+    borderColor: "#232938",
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 10,
     marginBottom: 6,
-    backgroundColor: "#f8fafc"
+    backgroundColor: "#141821"
   },
   postingCardMenuItemDisabled: {
     opacity: 0.6
   },
   postingCardMenuItemText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "600",
     fontSize: 12
   },
@@ -2023,28 +2036,28 @@ const styles = StyleSheet.create({
     opacity: 0.65
   },
   inlineNotice: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     marginTop: 4,
-    color: "#0b6e4f",
+    color: "#34d399",
     fontSize: 12
   },
   empty: {
     textAlign: "center",
     marginTop: 20,
-    color: "#52606d"
+    color: "#94a3b8"
   },
   applicationCard: {
     marginTop: 12,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#fdfefe"
+    borderColor: "#2a3040",
+    borderRadius: 12,
+    padding: 12,
+    backgroundColor: "#1a1f2e"
   },
   applicationAttribution: {
     marginTop: 4,
     fontSize: 12,
-    color: "#334e68",
+    color: "#94a3b8",
     fontStyle: "italic"
   },
   applicationActionsRow: {
@@ -2057,40 +2070,40 @@ const styles = StyleSheet.create({
   },
   applicationStatusBtn: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 8,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1a1f2e",
     paddingVertical: 8,
     paddingHorizontal: 10
   },
   applicationStatusBtnText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontSize: 12,
     fontWeight: "600"
   },
   applicationStatusMenu: {
     marginTop: 6,
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 8,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1e2433",
     padding: 6
   },
   applicationStatusMenuItem: {
     borderWidth: 1,
-    borderColor: "#edf2f7",
+    borderColor: "#232938",
     borderRadius: 8,
     paddingVertical: 7,
     paddingHorizontal: 8,
     marginBottom: 6,
-    backgroundColor: "#f8fafc"
+    backgroundColor: "#141821"
   },
   applicationStatusMenuItemActive: {
-    borderColor: "#102a43",
-    backgroundColor: "#102a43"
+    borderColor: "#10b981",
+    backgroundColor: "#10b981"
   },
   applicationStatusMenuItemText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontSize: 12
   },
   applicationStatusMenuItemTextActive: {
@@ -2099,9 +2112,9 @@ const styles = StyleSheet.create({
   },
   applicationDeleteBtn: {
     borderWidth: 1,
-    borderColor: "#d13a3a",
+    borderColor: "#ef4444",
     borderRadius: 8,
-    backgroundColor: "#d13a3a",
+    backgroundColor: "#ef4444",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 10,
@@ -2116,31 +2129,31 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   settingsContent: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingBottom: 24
   },
   settingsCard: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1a1f2e",
     borderWidth: 1,
-    borderColor: "#dbe2ea",
-    borderRadius: 12,
-    padding: 12
+    borderColor: "#2a3040",
+    borderRadius: 14,
+    padding: 14
   },
   settingsTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#102a43"
+    color: "#f1f5f9"
   },
   settingsSubsection: {
     marginTop: 4,
     fontSize: 14,
     fontWeight: "600",
-    color: "#334e68"
+    color: "#cbd5e1"
   },
   settingsDescription: {
     marginTop: 6,
     fontSize: 12,
-    color: "#52606d"
+    color: "#94a3b8"
   },
   settingsLoader: {
     marginTop: 12
@@ -2152,15 +2165,16 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     fontSize: 12,
     fontWeight: "600",
-    color: "#334e68"
+    color: "#cbd5e1"
   },
   textField: {
     borderWidth: 1,
-    borderColor: "#c6ceda",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#141821",
     paddingHorizontal: 12,
-    height: 42
+    height: 42,
+    color: "#e2e8f0"
   },
   textFieldMultiline: {
     minHeight: 72,
@@ -2173,9 +2187,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 10,
-    backgroundColor: "#f8fafc",
+    backgroundColor: "#141821",
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 8
@@ -2184,22 +2198,22 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     fontSize: 12,
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "600"
   },
   settingsNotice: {
     marginTop: 12,
     fontSize: 12,
-    color: "#0b6e4f"
+    color: "#34d399"
   },
   settingsInlineHint: {
     marginTop: 6,
     fontSize: 11,
-    color: "#52606d"
+    color: "#94a3b8"
   },
   settingsSaveButton: {
     marginTop: 10,
-    backgroundColor: "#0b6e4f",
+    backgroundColor: "#10b981",
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: "center"
@@ -2218,7 +2232,7 @@ const styles = StyleSheet.create({
   },
   drawerBackdrop: {
     flex: 1,
-    backgroundColor: "rgba(16, 42, 67, 0.25)"
+    backgroundColor: "rgba(0, 0, 0, 0.55)"
   },
   drawerPanel: {
     position: "absolute",
@@ -2226,9 +2240,9 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 286,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#141821",
     borderRightWidth: 1,
-    borderRightColor: "#dbe2ea",
+    borderRightColor: "#2a3040",
     paddingTop: 58,
     paddingHorizontal: 12
   },
@@ -2237,24 +2251,25 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     paddingHorizontal: 8,
     fontSize: 12,
-    color: "#7a8798",
+    color: "#64748b",
     textTransform: "uppercase",
-    fontWeight: "700"
+    fontWeight: "700",
+    letterSpacing: 0.5
   },
   drawerItem: {
     borderWidth: 1,
-    borderColor: "#dbe2ea",
+    borderColor: "#2a3040",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
     marginBottom: 8
   },
   drawerItemSelected: {
-    borderColor: "#102a43",
-    backgroundColor: "#102a43"
+    borderColor: "#10b981",
+    backgroundColor: "#10b981"
   },
   drawerItemText: {
-    color: "#334e68",
+    color: "#cbd5e1",
     fontWeight: "600"
   },
   drawerItemTextSelected: {
