@@ -3,7 +3,6 @@ import NetInfo from "@react-native-community/netinfo";
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   Linking,
   Platform,
   Pressable,
@@ -1606,11 +1605,10 @@ export default function App() {
             <Text style={styles.hamburgerIcon}>{"\u2630"}</Text>
           </Pressable>
           <View style={styles.headerLogoContainer}>
-            {activePage === PAGE_KEYS.POSTINGS ? (
-              <Image source={require("./logo.png")} style={styles.headerLogo} resizeMode="contain" />
-            ) : (
-              <Text style={styles.title}>OpenPostings</Text>
-            )}
+            <Text style={styles.title}>
+              <Text style={styles.logoOpen}>Open</Text>
+              <Text style={styles.logoPostings}>Postings</Text>
+            </Text>
           </View>
         </View>
         <View style={styles.headerTextContainer}>
@@ -1687,11 +1685,13 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     alignItems: "flex-end"
   },
-  headerLogo: {
-    width: 220,
-    height: 52,
-    marginTop: 2,
-    alignSelf: "flex-end"
+  logoOpen: {
+    color: "#f0f0f0",
+    fontWeight: "800"
+  },
+  logoPostings: {
+    color: "#10b981",
+    fontWeight: "800"
   },
   hamburgerButton: {
     width: 40,
