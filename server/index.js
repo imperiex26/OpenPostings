@@ -2022,6 +2022,29 @@ async function collectPostingsForLeverCompany(company) {
   return collected;
 }
 
+async function fetchIcimsPostingDate(jobUrl) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(jobUrl, {
+      method: "GET",
+      headers: { Accept: "text/html,application/xhtml+xml" },
+      signal: controller.signal
+    });
+    if (!res.ok) return null;
+    const html = await res.text();
+    const jsonLdMatch = html.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (!jsonLdMatch) return null;
+    const data = JSON.parse(jsonLdMatch[1]);
+    const datePosted = String(data?.datePosted || "").trim();
+    return datePosted || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function collectPostingsForIcimsCompany(company) {
   const config = parseIcimsCompany(company.url_string);
   if (!config) return [];
@@ -2052,6 +2075,28 @@ async function collectPostingsForIcimsCompany(company) {
     const nextPageUrl = extractIcimsNextPageUrlFromHtml(pageHtml, normalizedPageUrl);
     if (!nextPageUrl) break;
     pageUrl = nextPageUrl;
+  }
+
+  const indiaPostingsWithoutDate = [];
+  for (let i = 0; i < collected.length; i += 1) {
+    if (!collected[i].posting_date && looksLikeIndiaLocation(collected[i].location)) {
+      indiaPostingsWithoutDate.push({ index: i, jobUrl: collected[i].job_posting_url });
+    }
+  }
+
+  if (indiaPostingsWithoutDate.length > 0) {
+    const DETAIL_BATCH_SIZE = 5;
+    for (let i = 0; i < indiaPostingsWithoutDate.length; i += DETAIL_BATCH_SIZE) {
+      const batch = indiaPostingsWithoutDate.slice(i, i + DETAIL_BATCH_SIZE);
+      const results = await Promise.allSettled(
+        batch.map((item) => fetchIcimsPostingDate(item.jobUrl))
+      );
+      for (let j = 0; j < results.length; j += 1) {
+        if (results[j].status === "fulfilled" && results[j].value) {
+          collected[batch[j].index].posting_date = results[j].value;
+        }
+      }
+    }
   }
 
   return collected;
@@ -3135,12 +3180,12 @@ async function listPostingsWithFilters(options = {}) {
           SELECT id, company_name, position_name, job_posting_url, posting_date, last_seen_epoch, location
           FROM Postings
           WHERE location IS NOT NULL
-            AND (COALESCE(last_seen_epoch, 0) >= ? OR COALESCE(posting_date_epoch, first_seen_epoch, 0) >= ?)
+            AND COALESCE(posting_date_epoch, first_seen_epoch, last_seen_epoch, 0) >= ?
             ${buildIndiaClause("location")}
           ORDER BY ${orderByClause}
           LIMIT ? OFFSET ?;
         `,
-        [freshnessCutoff, freshnessCutoff, limit, offset]
+        [freshnessCutoff, limit, offset]
       );
     } else {
       rows = await db.all(
@@ -3156,12 +3201,12 @@ async function listPostingsWithFilters(options = {}) {
             )
           WHERE s.job_posting_url IS NULL
             AND p.location IS NOT NULL
-            AND (COALESCE(p.last_seen_epoch, 0) >= ? OR COALESCE(p.posting_date_epoch, p.first_seen_epoch, 0) >= ?)
+            AND COALESCE(p.posting_date_epoch, p.first_seen_epoch, p.last_seen_epoch, 0) >= ?
             ${buildIndiaClause("p.location")}
           ORDER BY ${orderByClause}
           LIMIT ? OFFSET ?;
         `,
-        [freshnessCutoff, freshnessCutoff, limit, offset]
+        [freshnessCutoff, limit, offset]
       );
     }
   } else {
@@ -3170,11 +3215,11 @@ async function listPostingsWithFilters(options = {}) {
         SELECT id, company_name, position_name, job_posting_url, posting_date, last_seen_epoch, location
         FROM Postings
         WHERE location IS NOT NULL
-          AND (COALESCE(last_seen_epoch, 0) >= ? OR COALESCE(posting_date_epoch, first_seen_epoch, 0) >= ?)
+          AND COALESCE(posting_date_epoch, first_seen_epoch, last_seen_epoch, 0) >= ?
           ${buildIndiaClause("location")}
         ORDER BY ${orderByClause};
       `,
-      [freshnessCutoff, freshnessCutoff]
+      [freshnessCutoff]
     );
   }
 
