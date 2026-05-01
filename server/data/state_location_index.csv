@@ -1,0 +1,266 @@
+id,location_type,state_usps,state_geoid,location_geoid,ansicode,location_name,search_location_name,normalized_location_name,normalized_search_location_name,lsad_code,funcstat,aland,awater,aland_sqmi,awater_sqmi,intptlat,intptlong,source_file
+1,state,AP,AP,AP,,Andhra Pradesh,Andhra Pradesh,andhra pradesh,andhra pradesh,,A,,,,,,,seed-india-locations.js
+2,state,AR,AR,AR,,Arunachal Pradesh,Arunachal Pradesh,arunachal pradesh,arunachal pradesh,,A,,,,,,,seed-india-locations.js
+3,state,AS,AS,AS,,Assam,Assam,assam,assam,,A,,,,,,,seed-india-locations.js
+4,state,BR,BR,BR,,Bihar,Bihar,bihar,bihar,,A,,,,,,,seed-india-locations.js
+5,state,CG,CG,CG,,Chhattisgarh,Chhattisgarh,chhattisgarh,chhattisgarh,,A,,,,,,,seed-india-locations.js
+6,state,GA,GA,GA,,Goa,Goa,goa,goa,,A,,,,,,,seed-india-locations.js
+7,state,GJ,GJ,GJ,,Gujarat,Gujarat,gujarat,gujarat,,A,,,,,,,seed-india-locations.js
+8,state,HR,HR,HR,,Haryana,Haryana,haryana,haryana,,A,,,,,,,seed-india-locations.js
+9,state,HP,HP,HP,,Himachal Pradesh,Himachal Pradesh,himachal pradesh,himachal pradesh,,A,,,,,,,seed-india-locations.js
+10,state,JH,JH,JH,,Jharkhand,Jharkhand,jharkhand,jharkhand,,A,,,,,,,seed-india-locations.js
+11,state,KA,KA,KA,,Karnataka,Karnataka,karnataka,karnataka,,A,,,,,,,seed-india-locations.js
+12,state,KL,KL,KL,,Kerala,Kerala,kerala,kerala,,A,,,,,,,seed-india-locations.js
+13,state,MP,MP,MP,,Madhya Pradesh,Madhya Pradesh,madhya pradesh,madhya pradesh,,A,,,,,,,seed-india-locations.js
+14,state,MH,MH,MH,,Maharashtra,Maharashtra,maharashtra,maharashtra,,A,,,,,,,seed-india-locations.js
+15,state,MN,MN,MN,,Manipur,Manipur,manipur,manipur,,A,,,,,,,seed-india-locations.js
+16,state,ML,ML,ML,,Meghalaya,Meghalaya,meghalaya,meghalaya,,A,,,,,,,seed-india-locations.js
+17,state,MZ,MZ,MZ,,Mizoram,Mizoram,mizoram,mizoram,,A,,,,,,,seed-india-locations.js
+18,state,NL,NL,NL,,Nagaland,Nagaland,nagaland,nagaland,,A,,,,,,,seed-india-locations.js
+19,state,OD,OD,OD,,Odisha,Odisha,odisha,odisha,,A,,,,,,,seed-india-locations.js
+20,state,PB,PB,PB,,Punjab,Punjab,punjab,punjab,,A,,,,,,,seed-india-locations.js
+21,state,RJ,RJ,RJ,,Rajasthan,Rajasthan,rajasthan,rajasthan,,A,,,,,,,seed-india-locations.js
+22,state,SK,SK,SK,,Sikkim,Sikkim,sikkim,sikkim,,A,,,,,,,seed-india-locations.js
+23,state,TN,TN,TN,,Tamil Nadu,Tamil Nadu,tamil nadu,tamil nadu,,A,,,,,,,seed-india-locations.js
+24,state,TS,TS,TS,,Telangana,Telangana,telangana,telangana,,A,,,,,,,seed-india-locations.js
+25,state,TR,TR,TR,,Tripura,Tripura,tripura,tripura,,A,,,,,,,seed-india-locations.js
+26,state,UP,UP,UP,,Uttar Pradesh,Uttar Pradesh,uttar pradesh,uttar pradesh,,A,,,,,,,seed-india-locations.js
+27,state,UK,UK,UK,,Uttarakhand,Uttarakhand,uttarakhand,uttarakhand,,A,,,,,,,seed-india-locations.js
+28,state,WB,WB,WB,,West Bengal,West Bengal,west bengal,west bengal,,A,,,,,,,seed-india-locations.js
+29,state,AN,AN,AN,,Andaman and Nicobar Islands,Andaman and Nicobar Islands,andaman and nicobar islands,andaman and nicobar islands,,A,,,,,,,seed-india-locations.js
+30,state,CH,CH,CH,,Chandigarh,Chandigarh,chandigarh,chandigarh,,A,,,,,,,seed-india-locations.js
+31,state,DN,DN,DN,,Dadra and Nagar Haveli and Daman and Diu,Dadra and Nagar Haveli and Daman and Diu,dadra and nagar haveli and daman and diu,dadra and nagar haveli and daman and diu,,A,,,,,,,seed-india-locations.js
+32,state,DL,DL,DL,,Delhi,Delhi,delhi,delhi,,A,,,,,,,seed-india-locations.js
+33,state,JK,JK,JK,,Jammu and Kashmir,Jammu and Kashmir,jammu and kashmir,jammu and kashmir,,A,,,,,,,seed-india-locations.js
+34,state,LA,LA,LA,,Ladakh,Ladakh,ladakh,ladakh,,A,,,,,,,seed-india-locations.js
+35,state,LD,LD,LD,,Lakshadweep,Lakshadweep,lakshadweep,lakshadweep,,A,,,,,,,seed-india-locations.js
+36,state,PY,PY,PY,,Puducherry,Puducherry,puducherry,puducherry,,A,,,,,,,seed-india-locations.js
+37,city,AP,AP,AP_visakhapatnam,,Visakhapatnam city,Visakhapatnam,visakhapatnam city,visakhapatnam,,A,,,,,,,seed-india-locations.js
+38,city,AP,AP,AP_vijayawada,,Vijayawada city,Vijayawada,vijayawada city,vijayawada,,A,,,,,,,seed-india-locations.js
+39,city,AP,AP,AP_guntur,,Guntur city,Guntur,guntur city,guntur,,A,,,,,,,seed-india-locations.js
+40,city,AP,AP,AP_nellore,,Nellore city,Nellore,nellore city,nellore,,A,,,,,,,seed-india-locations.js
+41,city,AP,AP,AP_kurnool,,Kurnool city,Kurnool,kurnool city,kurnool,,A,,,,,,,seed-india-locations.js
+42,city,AP,AP,AP_rajahmundry,,Rajahmundry city,Rajahmundry,rajahmundry city,rajahmundry,,A,,,,,,,seed-india-locations.js
+43,city,AP,AP,AP_tirupati,,Tirupati city,Tirupati,tirupati city,tirupati,,A,,,,,,,seed-india-locations.js
+44,city,AP,AP,AP_kakinada,,Kakinada city,Kakinada,kakinada city,kakinada,,A,,,,,,,seed-india-locations.js
+45,city,AP,AP,AP_anantapur,,Anantapur city,Anantapur,anantapur city,anantapur,,A,,,,,,,seed-india-locations.js
+46,city,AP,AP,AP_kadapa,,Kadapa city,Kadapa,kadapa city,kadapa,,A,,,,,,,seed-india-locations.js
+47,city,AR,AR,AR_itanagar,,Itanagar city,Itanagar,itanagar city,itanagar,,A,,,,,,,seed-india-locations.js
+48,city,AR,AR,AR_naharlagun,,Naharlagun city,Naharlagun,naharlagun city,naharlagun,,A,,,,,,,seed-india-locations.js
+49,city,AR,AR,AR_tawang,,Tawang city,Tawang,tawang city,tawang,,A,,,,,,,seed-india-locations.js
+50,city,AS,AS,AS_guwahati,,Guwahati city,Guwahati,guwahati city,guwahati,,A,,,,,,,seed-india-locations.js
+51,city,AS,AS,AS_silchar,,Silchar city,Silchar,silchar city,silchar,,A,,,,,,,seed-india-locations.js
+52,city,AS,AS,AS_dibrugarh,,Dibrugarh city,Dibrugarh,dibrugarh city,dibrugarh,,A,,,,,,,seed-india-locations.js
+53,city,AS,AS,AS_jorhat,,Jorhat city,Jorhat,jorhat city,jorhat,,A,,,,,,,seed-india-locations.js
+54,city,AS,AS,AS_nagaon,,Nagaon city,Nagaon,nagaon city,nagaon,,A,,,,,,,seed-india-locations.js
+55,city,AS,AS,AS_tinsukia,,Tinsukia city,Tinsukia,tinsukia city,tinsukia,,A,,,,,,,seed-india-locations.js
+56,city,AS,AS,AS_tezpur,,Tezpur city,Tezpur,tezpur city,tezpur,,A,,,,,,,seed-india-locations.js
+57,city,BR,BR,BR_patna,,Patna city,Patna,patna city,patna,,A,,,,,,,seed-india-locations.js
+58,city,BR,BR,BR_gaya,,Gaya city,Gaya,gaya city,gaya,,A,,,,,,,seed-india-locations.js
+59,city,BR,BR,BR_bhagalpur,,Bhagalpur city,Bhagalpur,bhagalpur city,bhagalpur,,A,,,,,,,seed-india-locations.js
+60,city,BR,BR,BR_muzaffarpur,,Muzaffarpur city,Muzaffarpur,muzaffarpur city,muzaffarpur,,A,,,,,,,seed-india-locations.js
+61,city,BR,BR,BR_darbhanga,,Darbhanga city,Darbhanga,darbhanga city,darbhanga,,A,,,,,,,seed-india-locations.js
+62,city,BR,BR,BR_purnia,,Purnia city,Purnia,purnia city,purnia,,A,,,,,,,seed-india-locations.js
+63,city,BR,BR,BR_bihar_sharif,,Bihar Sharif city,Bihar Sharif,bihar sharif city,bihar sharif,,A,,,,,,,seed-india-locations.js
+64,city,CG,CG,CG_raipur,,Raipur city,Raipur,raipur city,raipur,,A,,,,,,,seed-india-locations.js
+65,city,CG,CG,CG_bhilai,,Bhilai city,Bhilai,bhilai city,bhilai,,A,,,,,,,seed-india-locations.js
+66,city,CG,CG,CG_bilaspur,,Bilaspur city,Bilaspur,bilaspur city,bilaspur,,A,,,,,,,seed-india-locations.js
+67,city,CG,CG,CG_korba,,Korba city,Korba,korba city,korba,,A,,,,,,,seed-india-locations.js
+68,city,CG,CG,CG_durg,,Durg city,Durg,durg city,durg,,A,,,,,,,seed-india-locations.js
+69,city,CG,CG,CG_rajnandgaon,,Rajnandgaon city,Rajnandgaon,rajnandgaon city,rajnandgaon,,A,,,,,,,seed-india-locations.js
+70,city,GA,GA,GA_panaji,,Panaji city,Panaji,panaji city,panaji,,A,,,,,,,seed-india-locations.js
+71,city,GA,GA,GA_margao,,Margao city,Margao,margao city,margao,,A,,,,,,,seed-india-locations.js
+72,city,GA,GA,GA_vasco_da_gama,,Vasco da Gama city,Vasco da Gama,vasco da gama city,vasco da gama,,A,,,,,,,seed-india-locations.js
+73,city,GA,GA,GA_mapusa,,Mapusa city,Mapusa,mapusa city,mapusa,,A,,,,,,,seed-india-locations.js
+74,city,GA,GA,GA_ponda,,Ponda city,Ponda,ponda city,ponda,,A,,,,,,,seed-india-locations.js
+75,city,GJ,GJ,GJ_ahmedabad,,Ahmedabad city,Ahmedabad,ahmedabad city,ahmedabad,,A,,,,,,,seed-india-locations.js
+76,city,GJ,GJ,GJ_surat,,Surat city,Surat,surat city,surat,,A,,,,,,,seed-india-locations.js
+77,city,GJ,GJ,GJ_vadodara,,Vadodara city,Vadodara,vadodara city,vadodara,,A,,,,,,,seed-india-locations.js
+78,city,GJ,GJ,GJ_rajkot,,Rajkot city,Rajkot,rajkot city,rajkot,,A,,,,,,,seed-india-locations.js
+79,city,GJ,GJ,GJ_bhavnagar,,Bhavnagar city,Bhavnagar,bhavnagar city,bhavnagar,,A,,,,,,,seed-india-locations.js
+80,city,GJ,GJ,GJ_jamnagar,,Jamnagar city,Jamnagar,jamnagar city,jamnagar,,A,,,,,,,seed-india-locations.js
+81,city,GJ,GJ,GJ_gandhinagar,,Gandhinagar city,Gandhinagar,gandhinagar city,gandhinagar,,A,,,,,,,seed-india-locations.js
+82,city,GJ,GJ,GJ_junagadh,,Junagadh city,Junagadh,junagadh city,junagadh,,A,,,,,,,seed-india-locations.js
+83,city,GJ,GJ,GJ_anand,,Anand city,Anand,anand city,anand,,A,,,,,,,seed-india-locations.js
+84,city,GJ,GJ,GJ_navsari,,Navsari city,Navsari,navsari city,navsari,,A,,,,,,,seed-india-locations.js
+85,city,GJ,GJ,GJ_morbi,,Morbi city,Morbi,morbi city,morbi,,A,,,,,,,seed-india-locations.js
+86,city,GJ,GJ,GJ_mehsana,,Mehsana city,Mehsana,mehsana city,mehsana,,A,,,,,,,seed-india-locations.js
+87,city,HR,HR,HR_gurugram,,Gurugram city,Gurugram,gurugram city,gurugram,,A,,,,,,,seed-india-locations.js
+88,city,HR,HR,HR_faridabad,,Faridabad city,Faridabad,faridabad city,faridabad,,A,,,,,,,seed-india-locations.js
+89,city,HR,HR,HR_panipat,,Panipat city,Panipat,panipat city,panipat,,A,,,,,,,seed-india-locations.js
+90,city,HR,HR,HR_ambala,,Ambala city,Ambala,ambala city,ambala,,A,,,,,,,seed-india-locations.js
+91,city,HR,HR,HR_karnal,,Karnal city,Karnal,karnal city,karnal,,A,,,,,,,seed-india-locations.js
+92,city,HR,HR,HR_hisar,,Hisar city,Hisar,hisar city,hisar,,A,,,,,,,seed-india-locations.js
+93,city,HR,HR,HR_rohtak,,Rohtak city,Rohtak,rohtak city,rohtak,,A,,,,,,,seed-india-locations.js
+94,city,HR,HR,HR_sonipat,,Sonipat city,Sonipat,sonipat city,sonipat,,A,,,,,,,seed-india-locations.js
+95,city,HR,HR,HR_panchkula,,Panchkula city,Panchkula,panchkula city,panchkula,,A,,,,,,,seed-india-locations.js
+96,city,HP,HP,HP_shimla,,Shimla city,Shimla,shimla city,shimla,,A,,,,,,,seed-india-locations.js
+97,city,HP,HP,HP_dharamshala,,Dharamshala city,Dharamshala,dharamshala city,dharamshala,,A,,,,,,,seed-india-locations.js
+98,city,HP,HP,HP_manali,,Manali city,Manali,manali city,manali,,A,,,,,,,seed-india-locations.js
+99,city,HP,HP,HP_mandi,,Mandi city,Mandi,mandi city,mandi,,A,,,,,,,seed-india-locations.js
+100,city,HP,HP,HP_solan,,Solan city,Solan,solan city,solan,,A,,,,,,,seed-india-locations.js
+101,city,HP,HP,HP_kullu,,Kullu city,Kullu,kullu city,kullu,,A,,,,,,,seed-india-locations.js
+102,city,JH,JH,JH_ranchi,,Ranchi city,Ranchi,ranchi city,ranchi,,A,,,,,,,seed-india-locations.js
+103,city,JH,JH,JH_jamshedpur,,Jamshedpur city,Jamshedpur,jamshedpur city,jamshedpur,,A,,,,,,,seed-india-locations.js
+104,city,JH,JH,JH_dhanbad,,Dhanbad city,Dhanbad,dhanbad city,dhanbad,,A,,,,,,,seed-india-locations.js
+105,city,JH,JH,JH_bokaro,,Bokaro city,Bokaro,bokaro city,bokaro,,A,,,,,,,seed-india-locations.js
+106,city,JH,JH,JH_hazaribagh,,Hazaribagh city,Hazaribagh,hazaribagh city,hazaribagh,,A,,,,,,,seed-india-locations.js
+107,city,JH,JH,JH_deoghar,,Deoghar city,Deoghar,deoghar city,deoghar,,A,,,,,,,seed-india-locations.js
+108,city,KA,KA,KA_bengaluru,,Bengaluru city,Bengaluru,bengaluru city,bengaluru,,A,,,,,,,seed-india-locations.js
+109,city,KA,KA,KA_mysuru,,Mysuru city,Mysuru,mysuru city,mysuru,,A,,,,,,,seed-india-locations.js
+110,city,KA,KA,KA_mangaluru,,Mangaluru city,Mangaluru,mangaluru city,mangaluru,,A,,,,,,,seed-india-locations.js
+111,city,KA,KA,KA_hubli,,Hubli city,Hubli,hubli city,hubli,,A,,,,,,,seed-india-locations.js
+112,city,KA,KA,KA_dharwad,,Dharwad city,Dharwad,dharwad city,dharwad,,A,,,,,,,seed-india-locations.js
+113,city,KA,KA,KA_belgaum,,Belgaum city,Belgaum,belgaum city,belgaum,,A,,,,,,,seed-india-locations.js
+114,city,KA,KA,KA_shimoga,,Shimoga city,Shimoga,shimoga city,shimoga,,A,,,,,,,seed-india-locations.js
+115,city,KA,KA,KA_tumkur,,Tumkur city,Tumkur,tumkur city,tumkur,,A,,,,,,,seed-india-locations.js
+116,city,KA,KA,KA_udupi,,Udupi city,Udupi,udupi city,udupi,,A,,,,,,,seed-india-locations.js
+117,city,KA,KA,KA_davangere,,Davangere city,Davangere,davangere city,davangere,,A,,,,,,,seed-india-locations.js
+118,city,KA,KA,KA_gulbarga,,Gulbarga city,Gulbarga,gulbarga city,gulbarga,,A,,,,,,,seed-india-locations.js
+119,city,KL,KL,KL_thiruvananthapuram,,Thiruvananthapuram city,Thiruvananthapuram,thiruvananthapuram city,thiruvananthapuram,,A,,,,,,,seed-india-locations.js
+120,city,KL,KL,KL_kochi,,Kochi city,Kochi,kochi city,kochi,,A,,,,,,,seed-india-locations.js
+121,city,KL,KL,KL_kozhikode,,Kozhikode city,Kozhikode,kozhikode city,kozhikode,,A,,,,,,,seed-india-locations.js
+122,city,KL,KL,KL_thrissur,,Thrissur city,Thrissur,thrissur city,thrissur,,A,,,,,,,seed-india-locations.js
+123,city,KL,KL,KL_kollam,,Kollam city,Kollam,kollam city,kollam,,A,,,,,,,seed-india-locations.js
+124,city,KL,KL,KL_kannur,,Kannur city,Kannur,kannur city,kannur,,A,,,,,,,seed-india-locations.js
+125,city,KL,KL,KL_alappuzha,,Alappuzha city,Alappuzha,alappuzha city,alappuzha,,A,,,,,,,seed-india-locations.js
+126,city,KL,KL,KL_palakkad,,Palakkad city,Palakkad,palakkad city,palakkad,,A,,,,,,,seed-india-locations.js
+127,city,KL,KL,KL_malappuram,,Malappuram city,Malappuram,malappuram city,malappuram,,A,,,,,,,seed-india-locations.js
+128,city,MP,MP,MP_bhopal,,Bhopal city,Bhopal,bhopal city,bhopal,,A,,,,,,,seed-india-locations.js
+129,city,MP,MP,MP_indore,,Indore city,Indore,indore city,indore,,A,,,,,,,seed-india-locations.js
+130,city,MP,MP,MP_jabalpur,,Jabalpur city,Jabalpur,jabalpur city,jabalpur,,A,,,,,,,seed-india-locations.js
+131,city,MP,MP,MP_gwalior,,Gwalior city,Gwalior,gwalior city,gwalior,,A,,,,,,,seed-india-locations.js
+132,city,MP,MP,MP_ujjain,,Ujjain city,Ujjain,ujjain city,ujjain,,A,,,,,,,seed-india-locations.js
+133,city,MP,MP,MP_sagar,,Sagar city,Sagar,sagar city,sagar,,A,,,,,,,seed-india-locations.js
+134,city,MP,MP,MP_dewas,,Dewas city,Dewas,dewas city,dewas,,A,,,,,,,seed-india-locations.js
+135,city,MP,MP,MP_satna,,Satna city,Satna,satna city,satna,,A,,,,,,,seed-india-locations.js
+136,city,MP,MP,MP_ratlam,,Ratlam city,Ratlam,ratlam city,ratlam,,A,,,,,,,seed-india-locations.js
+137,city,MP,MP,MP_rewa,,Rewa city,Rewa,rewa city,rewa,,A,,,,,,,seed-india-locations.js
+138,city,MH,MH,MH_mumbai,,Mumbai city,Mumbai,mumbai city,mumbai,,A,,,,,,,seed-india-locations.js
+139,city,MH,MH,MH_pune,,Pune city,Pune,pune city,pune,,A,,,,,,,seed-india-locations.js
+140,city,MH,MH,MH_nagpur,,Nagpur city,Nagpur,nagpur city,nagpur,,A,,,,,,,seed-india-locations.js
+141,city,MH,MH,MH_thane,,Thane city,Thane,thane city,thane,,A,,,,,,,seed-india-locations.js
+142,city,MH,MH,MH_nashik,,Nashik city,Nashik,nashik city,nashik,,A,,,,,,,seed-india-locations.js
+143,city,MH,MH,MH_aurangabad,,Aurangabad city,Aurangabad,aurangabad city,aurangabad,,A,,,,,,,seed-india-locations.js
+144,city,MH,MH,MH_solapur,,Solapur city,Solapur,solapur city,solapur,,A,,,,,,,seed-india-locations.js
+145,city,MH,MH,MH_kolhapur,,Kolhapur city,Kolhapur,kolhapur city,kolhapur,,A,,,,,,,seed-india-locations.js
+146,city,MH,MH,MH_navi_mumbai,,Navi Mumbai city,Navi Mumbai,navi mumbai city,navi mumbai,,A,,,,,,,seed-india-locations.js
+147,city,MH,MH,MH_vasai-virar,,Vasai-Virar city,Vasai-Virar,vasai-virar city,vasai-virar,,A,,,,,,,seed-india-locations.js
+148,city,MH,MH,MH_amravati,,Amravati city,Amravati,amravati city,amravati,,A,,,,,,,seed-india-locations.js
+149,city,MH,MH,MH_sangli,,Sangli city,Sangli,sangli city,sangli,,A,,,,,,,seed-india-locations.js
+150,city,MH,MH,MH_kalyan-dombivli,,Kalyan-Dombivli city,Kalyan-Dombivli,kalyan-dombivli city,kalyan-dombivli,,A,,,,,,,seed-india-locations.js
+151,city,MN,MN,MN_imphal,,Imphal city,Imphal,imphal city,imphal,,A,,,,,,,seed-india-locations.js
+152,city,MN,MN,MN_thoubal,,Thoubal city,Thoubal,thoubal city,thoubal,,A,,,,,,,seed-india-locations.js
+153,city,MN,MN,MN_bishnupur,,Bishnupur city,Bishnupur,bishnupur city,bishnupur,,A,,,,,,,seed-india-locations.js
+154,city,ML,ML,ML_shillong,,Shillong city,Shillong,shillong city,shillong,,A,,,,,,,seed-india-locations.js
+155,city,ML,ML,ML_tura,,Tura city,Tura,tura city,tura,,A,,,,,,,seed-india-locations.js
+156,city,ML,ML,ML_jowai,,Jowai city,Jowai,jowai city,jowai,,A,,,,,,,seed-india-locations.js
+157,city,MZ,MZ,MZ_aizawl,,Aizawl city,Aizawl,aizawl city,aizawl,,A,,,,,,,seed-india-locations.js
+158,city,MZ,MZ,MZ_lunglei,,Lunglei city,Lunglei,lunglei city,lunglei,,A,,,,,,,seed-india-locations.js
+159,city,MZ,MZ,MZ_champhai,,Champhai city,Champhai,champhai city,champhai,,A,,,,,,,seed-india-locations.js
+160,city,NL,NL,NL_kohima,,Kohima city,Kohima,kohima city,kohima,,A,,,,,,,seed-india-locations.js
+161,city,NL,NL,NL_dimapur,,Dimapur city,Dimapur,dimapur city,dimapur,,A,,,,,,,seed-india-locations.js
+162,city,NL,NL,NL_mokokchung,,Mokokchung city,Mokokchung,mokokchung city,mokokchung,,A,,,,,,,seed-india-locations.js
+163,city,OD,OD,OD_bhubaneswar,,Bhubaneswar city,Bhubaneswar,bhubaneswar city,bhubaneswar,,A,,,,,,,seed-india-locations.js
+164,city,OD,OD,OD_cuttack,,Cuttack city,Cuttack,cuttack city,cuttack,,A,,,,,,,seed-india-locations.js
+165,city,OD,OD,OD_rourkela,,Rourkela city,Rourkela,rourkela city,rourkela,,A,,,,,,,seed-india-locations.js
+166,city,OD,OD,OD_berhampur,,Berhampur city,Berhampur,berhampur city,berhampur,,A,,,,,,,seed-india-locations.js
+167,city,OD,OD,OD_sambalpur,,Sambalpur city,Sambalpur,sambalpur city,sambalpur,,A,,,,,,,seed-india-locations.js
+168,city,OD,OD,OD_puri,,Puri city,Puri,puri city,puri,,A,,,,,,,seed-india-locations.js
+169,city,OD,OD,OD_balasore,,Balasore city,Balasore,balasore city,balasore,,A,,,,,,,seed-india-locations.js
+170,city,PB,PB,PB_ludhiana,,Ludhiana city,Ludhiana,ludhiana city,ludhiana,,A,,,,,,,seed-india-locations.js
+171,city,PB,PB,PB_amritsar,,Amritsar city,Amritsar,amritsar city,amritsar,,A,,,,,,,seed-india-locations.js
+172,city,PB,PB,PB_jalandhar,,Jalandhar city,Jalandhar,jalandhar city,jalandhar,,A,,,,,,,seed-india-locations.js
+173,city,PB,PB,PB_patiala,,Patiala city,Patiala,patiala city,patiala,,A,,,,,,,seed-india-locations.js
+174,city,PB,PB,PB_bathinda,,Bathinda city,Bathinda,bathinda city,bathinda,,A,,,,,,,seed-india-locations.js
+175,city,PB,PB,PB_mohali,,Mohali city,Mohali,mohali city,mohali,,A,,,,,,,seed-india-locations.js
+176,city,PB,PB,PB_pathankot,,Pathankot city,Pathankot,pathankot city,pathankot,,A,,,,,,,seed-india-locations.js
+177,city,PB,PB,PB_hoshiarpur,,Hoshiarpur city,Hoshiarpur,hoshiarpur city,hoshiarpur,,A,,,,,,,seed-india-locations.js
+178,city,RJ,RJ,RJ_jaipur,,Jaipur city,Jaipur,jaipur city,jaipur,,A,,,,,,,seed-india-locations.js
+179,city,RJ,RJ,RJ_jodhpur,,Jodhpur city,Jodhpur,jodhpur city,jodhpur,,A,,,,,,,seed-india-locations.js
+180,city,RJ,RJ,RJ_udaipur,,Udaipur city,Udaipur,udaipur city,udaipur,,A,,,,,,,seed-india-locations.js
+181,city,RJ,RJ,RJ_kota,,Kota city,Kota,kota city,kota,,A,,,,,,,seed-india-locations.js
+182,city,RJ,RJ,RJ_ajmer,,Ajmer city,Ajmer,ajmer city,ajmer,,A,,,,,,,seed-india-locations.js
+183,city,RJ,RJ,RJ_bikaner,,Bikaner city,Bikaner,bikaner city,bikaner,,A,,,,,,,seed-india-locations.js
+184,city,RJ,RJ,RJ_alwar,,Alwar city,Alwar,alwar city,alwar,,A,,,,,,,seed-india-locations.js
+185,city,RJ,RJ,RJ_bharatpur,,Bharatpur city,Bharatpur,bharatpur city,bharatpur,,A,,,,,,,seed-india-locations.js
+186,city,RJ,RJ,RJ_sikar,,Sikar city,Sikar,sikar city,sikar,,A,,,,,,,seed-india-locations.js
+187,city,RJ,RJ,RJ_bhilwara,,Bhilwara city,Bhilwara,bhilwara city,bhilwara,,A,,,,,,,seed-india-locations.js
+188,city,SK,SK,SK_gangtok,,Gangtok city,Gangtok,gangtok city,gangtok,,A,,,,,,,seed-india-locations.js
+189,city,SK,SK,SK_namchi,,Namchi city,Namchi,namchi city,namchi,,A,,,,,,,seed-india-locations.js
+190,city,SK,SK,SK_gyalshing,,Gyalshing city,Gyalshing,gyalshing city,gyalshing,,A,,,,,,,seed-india-locations.js
+191,city,TN,TN,TN_chennai,,Chennai city,Chennai,chennai city,chennai,,A,,,,,,,seed-india-locations.js
+192,city,TN,TN,TN_coimbatore,,Coimbatore city,Coimbatore,coimbatore city,coimbatore,,A,,,,,,,seed-india-locations.js
+193,city,TN,TN,TN_madurai,,Madurai city,Madurai,madurai city,madurai,,A,,,,,,,seed-india-locations.js
+194,city,TN,TN,TN_tiruchirappalli,,Tiruchirappalli city,Tiruchirappalli,tiruchirappalli city,tiruchirappalli,,A,,,,,,,seed-india-locations.js
+195,city,TN,TN,TN_salem,,Salem city,Salem,salem city,salem,,A,,,,,,,seed-india-locations.js
+196,city,TN,TN,TN_tirunelveli,,Tirunelveli city,Tirunelveli,tirunelveli city,tirunelveli,,A,,,,,,,seed-india-locations.js
+197,city,TN,TN,TN_erode,,Erode city,Erode,erode city,erode,,A,,,,,,,seed-india-locations.js
+198,city,TN,TN,TN_vellore,,Vellore city,Vellore,vellore city,vellore,,A,,,,,,,seed-india-locations.js
+199,city,TN,TN,TN_thoothukudi,,Thoothukudi city,Thoothukudi,thoothukudi city,thoothukudi,,A,,,,,,,seed-india-locations.js
+200,city,TN,TN,TN_tiruppur,,Tiruppur city,Tiruppur,tiruppur city,tiruppur,,A,,,,,,,seed-india-locations.js
+201,city,TN,TN,TN_dindigul,,Dindigul city,Dindigul,dindigul city,dindigul,,A,,,,,,,seed-india-locations.js
+202,city,TS,TS,TS_hyderabad,,Hyderabad city,Hyderabad,hyderabad city,hyderabad,,A,,,,,,,seed-india-locations.js
+203,city,TS,TS,TS_warangal,,Warangal city,Warangal,warangal city,warangal,,A,,,,,,,seed-india-locations.js
+204,city,TS,TS,TS_nizamabad,,Nizamabad city,Nizamabad,nizamabad city,nizamabad,,A,,,,,,,seed-india-locations.js
+205,city,TS,TS,TS_khammam,,Khammam city,Khammam,khammam city,khammam,,A,,,,,,,seed-india-locations.js
+206,city,TS,TS,TS_karimnagar,,Karimnagar city,Karimnagar,karimnagar city,karimnagar,,A,,,,,,,seed-india-locations.js
+207,city,TS,TS,TS_ramagundam,,Ramagundam city,Ramagundam,ramagundam city,ramagundam,,A,,,,,,,seed-india-locations.js
+208,city,TS,TS,TS_mahbubnagar,,Mahbubnagar city,Mahbubnagar,mahbubnagar city,mahbubnagar,,A,,,,,,,seed-india-locations.js
+209,city,TS,TS,TS_secunderabad,,Secunderabad city,Secunderabad,secunderabad city,secunderabad,,A,,,,,,,seed-india-locations.js
+210,city,TR,TR,TR_agartala,,Agartala city,Agartala,agartala city,agartala,,A,,,,,,,seed-india-locations.js
+211,city,TR,TR,TR_dharmanagar,,Dharmanagar city,Dharmanagar,dharmanagar city,dharmanagar,,A,,,,,,,seed-india-locations.js
+212,city,TR,TR,TR_udaipur,,Udaipur city,Udaipur,udaipur city,udaipur,,A,,,,,,,seed-india-locations.js
+213,city,UP,UP,UP_lucknow,,Lucknow city,Lucknow,lucknow city,lucknow,,A,,,,,,,seed-india-locations.js
+214,city,UP,UP,UP_kanpur,,Kanpur city,Kanpur,kanpur city,kanpur,,A,,,,,,,seed-india-locations.js
+215,city,UP,UP,UP_agra,,Agra city,Agra,agra city,agra,,A,,,,,,,seed-india-locations.js
+216,city,UP,UP,UP_varanasi,,Varanasi city,Varanasi,varanasi city,varanasi,,A,,,,,,,seed-india-locations.js
+217,city,UP,UP,UP_prayagraj,,Prayagraj city,Prayagraj,prayagraj city,prayagraj,,A,,,,,,,seed-india-locations.js
+218,city,UP,UP,UP_meerut,,Meerut city,Meerut,meerut city,meerut,,A,,,,,,,seed-india-locations.js
+219,city,UP,UP,UP_ghaziabad,,Ghaziabad city,Ghaziabad,ghaziabad city,ghaziabad,,A,,,,,,,seed-india-locations.js
+220,city,UP,UP,UP_noida,,Noida city,Noida,noida city,noida,,A,,,,,,,seed-india-locations.js
+221,city,UP,UP,UP_greater_noida,,Greater Noida city,Greater Noida,greater noida city,greater noida,,A,,,,,,,seed-india-locations.js
+222,city,UP,UP,UP_aligarh,,Aligarh city,Aligarh,aligarh city,aligarh,,A,,,,,,,seed-india-locations.js
+223,city,UP,UP,UP_bareilly,,Bareilly city,Bareilly,bareilly city,bareilly,,A,,,,,,,seed-india-locations.js
+224,city,UP,UP,UP_moradabad,,Moradabad city,Moradabad,moradabad city,moradabad,,A,,,,,,,seed-india-locations.js
+225,city,UP,UP,UP_gorakhpur,,Gorakhpur city,Gorakhpur,gorakhpur city,gorakhpur,,A,,,,,,,seed-india-locations.js
+226,city,UP,UP,UP_saharanpur,,Saharanpur city,Saharanpur,saharanpur city,saharanpur,,A,,,,,,,seed-india-locations.js
+227,city,UP,UP,UP_jhansi,,Jhansi city,Jhansi,jhansi city,jhansi,,A,,,,,,,seed-india-locations.js
+228,city,UP,UP,UP_mathura,,Mathura city,Mathura,mathura city,mathura,,A,,,,,,,seed-india-locations.js
+229,city,UP,UP,UP_firozabad,,Firozabad city,Firozabad,firozabad city,firozabad,,A,,,,,,,seed-india-locations.js
+230,city,UK,UK,UK_dehradun,,Dehradun city,Dehradun,dehradun city,dehradun,,A,,,,,,,seed-india-locations.js
+231,city,UK,UK,UK_haridwar,,Haridwar city,Haridwar,haridwar city,haridwar,,A,,,,,,,seed-india-locations.js
+232,city,UK,UK,UK_haldwani,,Haldwani city,Haldwani,haldwani city,haldwani,,A,,,,,,,seed-india-locations.js
+233,city,UK,UK,UK_rishikesh,,Rishikesh city,Rishikesh,rishikesh city,rishikesh,,A,,,,,,,seed-india-locations.js
+234,city,UK,UK,UK_roorkee,,Roorkee city,Roorkee,roorkee city,roorkee,,A,,,,,,,seed-india-locations.js
+235,city,UK,UK,UK_nainital,,Nainital city,Nainital,nainital city,nainital,,A,,,,,,,seed-india-locations.js
+236,city,UK,UK,UK_kashipur,,Kashipur city,Kashipur,kashipur city,kashipur,,A,,,,,,,seed-india-locations.js
+237,city,UK,UK,UK_rudrapur,,Rudrapur city,Rudrapur,rudrapur city,rudrapur,,A,,,,,,,seed-india-locations.js
+238,city,WB,WB,WB_kolkata,,Kolkata city,Kolkata,kolkata city,kolkata,,A,,,,,,,seed-india-locations.js
+239,city,WB,WB,WB_howrah,,Howrah city,Howrah,howrah city,howrah,,A,,,,,,,seed-india-locations.js
+240,city,WB,WB,WB_durgapur,,Durgapur city,Durgapur,durgapur city,durgapur,,A,,,,,,,seed-india-locations.js
+241,city,WB,WB,WB_asansol,,Asansol city,Asansol,asansol city,asansol,,A,,,,,,,seed-india-locations.js
+242,city,WB,WB,WB_siliguri,,Siliguri city,Siliguri,siliguri city,siliguri,,A,,,,,,,seed-india-locations.js
+243,city,WB,WB,WB_bardhaman,,Bardhaman city,Bardhaman,bardhaman city,bardhaman,,A,,,,,,,seed-india-locations.js
+244,city,WB,WB,WB_malda,,Malda city,Malda,malda city,malda,,A,,,,,,,seed-india-locations.js
+245,city,WB,WB,WB_baharampur,,Baharampur city,Baharampur,baharampur city,baharampur,,A,,,,,,,seed-india-locations.js
+246,city,WB,WB,WB_kharagpur,,Kharagpur city,Kharagpur,kharagpur city,kharagpur,,A,,,,,,,seed-india-locations.js
+247,city,AN,AN,AN_port_blair,,Port Blair city,Port Blair,port blair city,port blair,,A,,,,,,,seed-india-locations.js
+248,city,CH,CH,CH_chandigarh,,Chandigarh city,Chandigarh,chandigarh city,chandigarh,,A,,,,,,,seed-india-locations.js
+249,city,DN,DN,DN_silvassa,,Silvassa city,Silvassa,silvassa city,silvassa,,A,,,,,,,seed-india-locations.js
+250,city,DN,DN,DN_daman,,Daman city,Daman,daman city,daman,,A,,,,,,,seed-india-locations.js
+251,city,DN,DN,DN_diu,,Diu city,Diu,diu city,diu,,A,,,,,,,seed-india-locations.js
+252,city,DL,DL,DL_new_delhi,,New Delhi city,New Delhi,new delhi city,new delhi,,A,,,,,,,seed-india-locations.js
+253,city,DL,DL,DL_delhi,,Delhi city,Delhi,delhi city,delhi,,A,,,,,,,seed-india-locations.js
+254,city,JK,JK,JK_srinagar,,Srinagar city,Srinagar,srinagar city,srinagar,,A,,,,,,,seed-india-locations.js
+255,city,JK,JK,JK_jammu,,Jammu city,Jammu,jammu city,jammu,,A,,,,,,,seed-india-locations.js
+256,city,JK,JK,JK_anantnag,,Anantnag city,Anantnag,anantnag city,anantnag,,A,,,,,,,seed-india-locations.js
+257,city,JK,JK,JK_baramulla,,Baramulla city,Baramulla,baramulla city,baramulla,,A,,,,,,,seed-india-locations.js
+258,city,JK,JK,JK_sopore,,Sopore city,Sopore,sopore city,sopore,,A,,,,,,,seed-india-locations.js
+259,city,LA,LA,LA_leh,,Leh city,Leh,leh city,leh,,A,,,,,,,seed-india-locations.js
+260,city,LA,LA,LA_kargil,,Kargil city,Kargil,kargil city,kargil,,A,,,,,,,seed-india-locations.js
+261,city,LD,LD,LD_kavaratti,,Kavaratti city,Kavaratti,kavaratti city,kavaratti,,A,,,,,,,seed-india-locations.js
+262,city,PY,PY,PY_puducherry,,Puducherry city,Puducherry,puducherry city,puducherry,,A,,,,,,,seed-india-locations.js
+263,city,PY,PY,PY_karaikal,,Karaikal city,Karaikal,karaikal city,karaikal,,A,,,,,,,seed-india-locations.js
+264,city,PY,PY,PY_mahe,,Mahe city,Mahe,mahe city,mahe,,A,,,,,,,seed-india-locations.js
+265,city,PY,PY,PY_yanam,,Yanam city,Yanam,yanam city,yanam,,A,,,,,,,seed-india-locations.js

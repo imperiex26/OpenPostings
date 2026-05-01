@@ -1,8 +1,11 @@
 const path = require("path");
+const fs = require("fs");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
 const DB_PATH = process.env.DB_PATH || path.resolve(__dirname, "..", "jobs.db");
+const DATA_DIR = path.resolve(__dirname, "data");
+const OUTPUT_FILE = path.join(DATA_DIR, "state_location_index.csv");
 
 const INDIAN_STATES_AND_UTS = [
   { code: "AP", name: "Andhra Pradesh" },
@@ -82,17 +85,97 @@ const INDIAN_CITIES = [
   { state: "PY", cities: ["Puducherry", "Karaikal", "Mahe", "Yanam"] }
 ];
 
-async function main() {
-  const db = await open({
-    filename: DB_PATH,
-    driver: sqlite3.Database
-  });
+const CSV_COLUMNS = [
+  "id", "location_type", "state_usps", "state_geoid", "location_geoid",
+  "ansicode", "location_name", "search_location_name",
+  "normalized_location_name", "normalized_search_location_name",
+  "lsad_code", "funcstat", "aland", "awater", "aland_sqmi", "awater_sqmi",
+  "intptlat", "intptlong", "source_file"
+];
 
+function escapeCsvField(value) {
+  if (value === null || value === undefined) return "";
+  const str = String(value);
+  if (str.includes(",") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function toCsvRow(fields) {
+  return fields.map(escapeCsvField).join(",");
+}
+
+function buildRows() {
+  const rows = [];
+  let nextId = 1;
+
+  for (const state of INDIAN_STATES_AND_UTS) {
+    rows.push({
+      id: nextId++,
+      location_type: "state",
+      state_usps: state.code,
+      state_geoid: state.code,
+      location_geoid: state.code,
+      ansicode: "",
+      location_name: state.name,
+      search_location_name: state.name,
+      normalized_location_name: state.name.toLowerCase(),
+      normalized_search_location_name: state.name.toLowerCase(),
+      lsad_code: "",
+      funcstat: "A",
+      aland: "", awater: "", aland_sqmi: "", awater_sqmi: "",
+      intptlat: "", intptlong: "",
+      source_file: "seed-india-locations.js"
+    });
+  }
+
+  for (const stateEntry of INDIAN_CITIES) {
+    for (const city of stateEntry.cities) {
+      rows.push({
+        id: nextId++,
+        location_type: "city",
+        state_usps: stateEntry.state,
+        state_geoid: stateEntry.state,
+        location_geoid: `${stateEntry.state}_${city.toLowerCase().replace(/\s+/g, "_")}`,
+        ansicode: "",
+        location_name: `${city} city`,
+        search_location_name: city,
+        normalized_location_name: `${city.toLowerCase()} city`,
+        normalized_search_location_name: city.toLowerCase(),
+        lsad_code: "",
+        funcstat: "A",
+        aland: "", awater: "", aland_sqmi: "", awater_sqmi: "",
+        intptlat: "", intptlong: "",
+        source_file: "seed-india-locations.js",
+        created_at: now
+      });
+    }
+  }
+
+  return rows;
+}
+
+function writeCsv(rows) {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  const header = toCsvRow(CSV_COLUMNS);
+  const lines = [header, ...rows.map((row) => toCsvRow(CSV_COLUMNS.map((col) => row[col])))];
+  fs.writeFileSync(OUTPUT_FILE, lines.join("\n") + "\n", "utf8");
+  console.log(`Wrote ${rows.length} rows to ${OUTPUT_FILE}`);
+}
+
+async function applyToDb(rows) {
+  const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
   console.log(`DB: ${DB_PATH}`);
 
-  // Drop and recreate the table with updated CHECK constraint (city/state instead of city/county)
-  const beforeCount = await db.get("SELECT COUNT(*) as c FROM state_location_index");
-  console.log(`Existing rows: ${beforeCount.c}`);
+  try {
+    const beforeCount = await db.get("SELECT COUNT(*) as c FROM state_location_index");
+    console.log(`Existing rows: ${beforeCount.c}`);
+  } catch {
+    console.log("Table does not exist yet.");
+  }
 
   await db.exec("DROP TABLE IF EXISTS state_location_index;");
   await db.exec(`
@@ -122,10 +205,6 @@ async function main() {
   `);
   console.log("Recreated state_location_index table with India schema.");
 
-  // Insert Indian states as 'state' type entries
-  let insertedStates = 0;
-  let insertedCities = 0;
-
   const INSERT_SQL = `
     INSERT INTO state_location_index (
       location_type, state_usps, state_geoid, location_geoid,
@@ -136,33 +215,24 @@ async function main() {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
   `;
 
+  let insertedStates = 0;
+  let insertedCities = 0;
+
   await db.exec("BEGIN TRANSACTION;");
   try {
-    for (const state of INDIAN_STATES_AND_UTS) {
+    for (const row of rows) {
+      const val = (v) => (v === "" ? null : v);
       await db.run(INSERT_SQL, [
-        "state", state.code, state.code, state.code,
-        null, state.name, state.name,
-        state.name.toLowerCase(), state.name.toLowerCase(),
-        null, "A", null, null, null, null, null, null,
-        "seed-india-locations.js"
+        row.location_type, row.state_usps, row.state_geoid, row.location_geoid,
+        val(row.ansicode), row.location_name, row.search_location_name,
+        row.normalized_location_name, row.normalized_search_location_name,
+        val(row.lsad_code), row.funcstat, val(row.aland), val(row.awater),
+        val(row.aland_sqmi), val(row.awater_sqmi),
+        val(row.intptlat), val(row.intptlong), row.source_file
       ]);
-      insertedStates++;
+      if (row.location_type === "state") insertedStates++;
+      else insertedCities++;
     }
-
-    for (const stateEntry of INDIAN_CITIES) {
-      for (const city of stateEntry.cities) {
-        await db.run(INSERT_SQL, [
-          "city", stateEntry.state, stateEntry.state,
-          `${stateEntry.state}_${city.toLowerCase().replace(/\s+/g, "_")}`,
-          null, `${city} city`, city,
-          `${city.toLowerCase()} city`, city.toLowerCase(),
-          null, "A", null, null, null, null, null, null,
-          "seed-india-locations.js"
-        ]);
-        insertedCities++;
-      }
-    }
-
     await db.exec("COMMIT;");
 
     console.log(`Inserted ${insertedStates} states/UTs`);
@@ -178,6 +248,22 @@ async function main() {
     throw error;
   } finally {
     await db.close();
+  }
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const useDb = args.includes("--db");
+  const rows = buildRows();
+
+  // Always write CSV (source of truth)
+  writeCsv(rows);
+
+  // Optionally also apply to the live database
+  if (useDb) {
+    await applyToDb(rows);
+  } else {
+    console.log("CSV written. Pass --db to also apply to the live database.");
   }
 }
 

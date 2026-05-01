@@ -1,11 +1,13 @@
 const cors = require("cors");
 const express = require("express");
+const fs = require("fs");
 const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
 const PORT = Number(process.env.PORT || 8787);
 const DB_PATH = process.env.DB_PATH || path.resolve(__dirname, "..", "jobs.db");
+const SEED_DATA_DIR = path.resolve(__dirname, "data");
 const SYNC_INTERVAL_MS = Number(process.env.SYNC_INTERVAL_MS || 30 * 60 * 1000);
 const SYNC_CONCURRENCY = Number(process.env.SYNC_CONCURRENCY || 20);
 const SYNC_POSTING_FLUSH_BATCH_SIZE = Number(process.env.SYNC_POSTING_FLUSH_BATCH_SIZE || 200);
@@ -2570,6 +2572,207 @@ async function ensureCompaniesTableSchema() {
   const columns = new Set(tableInfo.map((column) => String(column?.name || "")));
 }
 
+// --------------- CSV seed utilities ---------------
+
+function parseCsvLine(line) {
+  const fields = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ",") {
+        fields.push(current);
+        current = "";
+      } else {
+        current += ch;
+      }
+    }
+  }
+  fields.push(current);
+  return fields;
+}
+
+function loadCsvFile(filename) {
+  const filePath = path.join(SEED_DATA_DIR, filename);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[seed] data file not found: ${filePath}`);
+    return { columns: [], rows: [] };
+  }
+  const content = fs.readFileSync(filePath, "utf8");
+  const lines = content.split("\n").filter((line) => line.trim() !== "");
+  if (lines.length === 0) return { columns: [], rows: [] };
+  const columns = parseCsvLine(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCsvLine(lines[i]);
+    const row = {};
+    for (let j = 0; j < columns.length; j++) {
+      row[columns[j]] = values[j] !== undefined ? values[j] : "";
+    }
+    rows.push(row);
+  }
+  return { columns, rows };
+}
+
+async function seedTableFromCsv(tableName, csvFilename, createTableSql, options = {}) {
+  // Ensure table exists
+  await db.exec(createTableSql);
+
+  // Check if already populated
+  const result = await db.get(`SELECT COUNT(*) as c FROM ${tableName};`);
+  const count = Number(result?.c || 0);
+  if (count > 0) {
+    console.log(`[seed] ${tableName}: already has ${count} rows, skipping.`);
+    return;
+  }
+
+  const { columns, rows } = loadCsvFile(csvFilename);
+  if (rows.length === 0) {
+    console.warn(`[seed] ${tableName}: no data in ${csvFilename}, skipping.`);
+    return;
+  }
+
+  console.log(`[seed] ${tableName}: loading ${rows.length} rows from ${csvFilename}...`);
+
+  const CHUNK_SIZE = options.chunkSize || 200;
+  const insertColumns = columns;
+
+  await db.exec("BEGIN TRANSACTION;");
+  try {
+    for (let offset = 0; offset < rows.length; offset += CHUNK_SIZE) {
+      const chunk = rows.slice(offset, offset + CHUNK_SIZE);
+      const placeholders = chunk
+        .map(() => "(" + insertColumns.map(() => "?").join(", ") + ")")
+        .join(", ");
+      const params = [];
+      for (const row of chunk) {
+        for (const col of insertColumns) {
+          let val = row[col];
+          if (val === "" || val === undefined) {
+            val = null;
+          } else if (options.numericColumns?.has(col)) {
+            val = Number(val);
+          }
+          params.push(val);
+        }
+      }
+      await db.run(
+        `INSERT INTO ${tableName} (${insertColumns.join(", ")}) VALUES ${placeholders};`,
+        params
+      );
+    }
+    await db.exec("COMMIT;");
+    console.log(`[seed] ${tableName}: loaded ${rows.length} rows.`);
+  } catch (error) {
+    await db.exec("ROLLBACK;");
+    console.error(`[seed] ${tableName}: failed to load:`, error);
+    throw error;
+  }
+}
+
+async function seedCompanies() {
+  await seedTableFromCsv(
+    "companies",
+    "companies.csv",
+    `CREATE TABLE IF NOT EXISTS companies (
+      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      company_name TEXT NOT NULL,
+      url_string TEXT NOT NULL,
+      ATS_name TEXT NOT NULL
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_companies_url_string ON companies(url_string);
+    CREATE INDEX IF NOT EXISTS idx_companies_company_name ON companies(company_name);
+    CREATE INDEX IF NOT EXISTS idx_companies_ats_name ON companies(ATS_name);`,
+    { numericColumns: new Set(["id"]) }
+  );
+}
+
+async function seedJobIndustryCategories() {
+  await seedTableFromCsv(
+    "job_industry_categories",
+    "job_industry_categories.csv",
+    `CREATE TABLE IF NOT EXISTS job_industry_categories (
+      id INTEGER NOT NULL PRIMARY KEY,
+      industry_key TEXT NOT NULL,
+      industry_label TEXT NOT NULL,
+      priority INTEGER,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );`,
+    { numericColumns: new Set(["id", "priority"]) }
+  );
+}
+
+async function seedJobPositionIndustry() {
+  await seedTableFromCsv(
+    "job_position_industry",
+    "job_position_industry.csv",
+    `CREATE TABLE IF NOT EXISTS job_position_industry (
+      id INTEGER NOT NULL PRIMARY KEY,
+      job_title TEXT,
+      normalized_job_title TEXT,
+      industry_key TEXT,
+      industry_label TEXT,
+      matched_rules TEXT,
+      confidence_score REAL,
+      rule_version TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );`,
+    { numericColumns: new Set(["id", "confidence_score"]), chunkSize: 500 }
+  );
+}
+
+async function seedStateLocationIndex() {
+  await seedTableFromCsv(
+    "state_location_index",
+    "state_location_index.csv",
+    `CREATE TABLE IF NOT EXISTS state_location_index (
+      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+      location_type TEXT NOT NULL CHECK (location_type IN ('city', 'state')),
+      state_usps TEXT NOT NULL,
+      state_geoid TEXT,
+      location_geoid TEXT NOT NULL,
+      ansicode TEXT,
+      location_name TEXT NOT NULL,
+      search_location_name TEXT NOT NULL,
+      normalized_location_name TEXT NOT NULL,
+      normalized_search_location_name TEXT NOT NULL,
+      lsad_code TEXT,
+      funcstat TEXT,
+      aland INTEGER,
+      awater INTEGER,
+      aland_sqmi REAL,
+      awater_sqmi REAL,
+      intptlat REAL,
+      intptlong REAL,
+      source_file TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      UNIQUE(location_type, location_geoid)
+    );`,
+    {
+      numericColumns: new Set([
+        "id", "aland", "awater", "aland_sqmi", "awater_sqmi", "intptlat", "intptlong"
+      ])
+    }
+  );
+}
+
+// --------------- end CSV seed utilities ---------------
+
 async function initDb() {
   db = await open({
     filename: DB_PATH,
@@ -2584,23 +2787,13 @@ async function initDb() {
     PRAGMA temp_store = MEMORY;
     PRAGMA busy_timeout = 5000;
     PRAGMA page_size = 4096;
-
-    CREATE TABLE IF NOT EXISTS companies (
-      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-      company_name TEXT NOT NULL,
-      url_string TEXT NOT NULL,
-      ATS_name TEXT NOT NULL
-    );
-
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_companies_url_string
-      ON companies(url_string);
-
-    CREATE INDEX IF NOT EXISTS idx_companies_company_name
-      ON companies(company_name);
-
-    CREATE INDEX IF NOT EXISTS idx_companies_ats_name
-      ON companies(ATS_name);
   `);
+
+  // Seed reference tables from CSV files (creates tables if needed, skips if populated)
+  await seedCompanies();
+  await seedJobIndustryCategories();
+  await seedJobPositionIndustry();
+  await seedStateLocationIndex();
 
   await ensurePostingsTable();
   await ensurePersonalInformationTable();

@@ -1,0 +1,29 @@
+id,industry_key,industry_label,priority
+1,information_technology_software,Information Technology & Software,120
+2,data_ai_analytics,"Data, AI & Analytics",118
+3,cybersecurity_network_telecom,"Cybersecurity, Network & Telecom",116
+4,engineering_architecture,Engineering & Architecture,112
+5,construction_skilled_trades,Construction & Skilled Trades,110
+6,manufacturing_production,Manufacturing & Production,108
+7,transportation_logistics_warehouse,"Transportation, Logistics & Warehouse",106
+8,automotive_service_repair,Automotive Service & Repair,104
+9,aerospace_aviation_maritime,"Aerospace, Aviation & Maritime",102
+10,healthcare_medical,Healthcare & Medical,100
+11,behavioral_health_social_care,Behavioral Health & Social Care,98
+12,education_training_library,"Education, Training & Library",96
+13,science_research_biotech_pharma,"Science, Research, Biotech & Pharma",94
+14,agriculture_forestry_fishing,"Agriculture, Forestry & Fishing",92
+15,energy_utilities_environmental,"Energy, Utilities & Environmental",90
+16,government_public_safety_military,"Government, Public Safety & Military",88
+17,finance_accounting_banking_insurance,"Finance, Accounting, Banking & Insurance",86
+18,legal_compliance,Legal & Compliance,84
+19,human_resources_recruiting,Human Resources & Recruiting,82
+20,sales_business_development,Sales & Business Development,80
+21,marketing_advertising_media_design,"Marketing, Advertising, Media & Design",78
+22,customer_service_call_center,Customer Service & Call Center,76
+23,hospitality_food_travel,"Hospitality, Food Service & Travel",74
+24,retail_merchandising,Retail & Merchandising,72
+25,real_estate_property_facilities,"Real Estate, Property & Facilities",70
+26,arts_entertainment_sports_fitness_beauty,"Arts, Entertainment, Sports, Fitness & Beauty",68
+27,nonprofit_community_religious,"Nonprofit, Community & Religious Services",66
+28,administration_operations,Administration & Operations,10

@@ -1,9 +1,10 @@
 const path = require("path");
+const fs = require("fs");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
-const ROOT_DIR = path.resolve(__dirname, "..", "..");
 const DB_PATH = process.env.DB_PATH || path.resolve(__dirname, "..", "jobs.db");
+const DATA_DIR = path.resolve(__dirname, "data");
 
 const APPLY = process.argv.includes("--apply");
 
@@ -127,6 +128,36 @@ const RULES = [
   }
 ];
 
+function escapeCsvField(value) {
+  if (value === null || value === undefined) return "";
+  const str = String(value);
+  if (str.includes(",") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function toCsvRow(fields) {
+  return fields.map(escapeCsvField).join(",");
+}
+
+const JPI_COLUMNS = [
+  "id", "job_title", "normalized_job_title", "industry_key", "industry_label",
+  "matched_rules", "confidence_score", "rule_version"
+];
+
+async function reExportJobPositionIndustryCsv(db) {
+  const rows = await db.all(
+    `SELECT ${JPI_COLUMNS.join(", ")} FROM job_position_industry ORDER BY id ASC;`
+  );
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  const outputFile = path.join(DATA_DIR, "job_position_industry.csv");
+  const header = toCsvRow(JPI_COLUMNS);
+  const lines = [header, ...rows.map((row) => toCsvRow(JPI_COLUMNS.map((col) => row[col])))];
+  fs.writeFileSync(outputFile, lines.join("\n") + "\n", "utf8");
+  console.log(`Re-exported ${rows.length} rows to ${outputFile}`);
+}
+
 function normalizeText(value) {
   return String(value || "")
     .toLowerCase()
@@ -243,6 +274,9 @@ async function main() {
     }
     await db.exec("COMMIT;");
     console.log(`Applied updates: ${updates.length}`);
+
+    // Re-export updated table to CSV (keeps data file in sync)
+    await reExportJobPositionIndustryCsv(db);
   } catch (error) {
     await db.exec("ROLLBACK;");
     throw error;

@@ -1,57 +1,88 @@
 # OpenPostings
 
-OpenPostings is an OpenSource ATS job aggregator and application tracking app. **It pulls jobs that were posted in the last 24 hours** or that has no posted date. 
+<p align="center">
+  <img src="logo.png" alt="OpenPostings" width="400" />
+</p>
+
+<p align="center">
+  Open-source job aggregator that pulls fresh postings from <strong>30,000+ companies across India</strong> — all in one local app.
+</p>
+
+---
+
+OpenPostings scrapes 10 major Applicant Tracking Systems every 30 minutes, stores jobs locally in SQLite, and lets you search, filter, track applications, and even auto-apply with an MCP-powered AI agent.
 
 ## Youtube Video
 [![OpenPostings Discussion](https://img.youtube.com/vi/5sVIhhwx3Yk/0.jpg)](https://www.youtube.com/watch?v=5sVIhhwx3Yk)
 
-## Diagram
+## Highlights
+
+- **30,000+ companies** across India, pre-loaded and ready on first run
+- **10 ATS integrations** — Workday, Greenhouse, Lever, Ashby, iCIMS, Recruitee, UKG/UltiPro, OracleCloud, Workable, BambooHR
+- **Fresh jobs only** — pulls postings from the last 24 hours, auto-prunes stale ones
+- **28 industry categories** with smart job-title classification
+- **36 Indian states/UTs and 200+ cities** for location-based filtering
+- **Zero cloud dependency** — everything runs on your machine, your data stays local
+- **MCP agent support** — let Claude, Codex, Gemini, or any LLM find and apply to jobs for you
+
+## Architecture
+
+```
++------------------+       +------------------+       +----------------+
+|                  |       |                  |       |                |
+|  React Native    | <---> |  Express API     | <---> |  SQLite        |
+|  (Web/Android/   |  REST |  (localhost:8787)|       |  (jobs.db)     |
+|   Windows)       |       |                  |       |                |
++------------------+       +--------+---------+       +-------+--------+
+                                    |                         |
+                           +--------+---------+     +---------+--------+
+                           |                  |     |                  |
+                           |  ATS Scrapers    |     |  CSV Seed Data   |
+                           |  (10 providers)  |     |  (server/data/)  |
+                           |  every 30 min    |     |  companies, etc. |
+                           +------------------+     +------------------+
+                                    
+                           +------------------+
+                           |                  |
+                           |  MCP Apply Agent |
+                           |  (stdio server)  |
+                           +------------------+
+```
+
+**On first `npm run server`**, the app creates `jobs.db` from CSV seed files shipped in the repo (`server/data/`). No external database download needed. The sync cycle then begins pulling live postings from all 30,000+ companies.
+
+## Screenshots
+
 ![Web UI Screenshot](README-Images/webui.png)
 
-## Features
-
-It combines:
-- A React Native client (`Web`, `Android`, `Windows`)
-- A local Node/Express API
-- A local SQLite database
-- An MCP apply-agent server for agent-assisted workflows
-
-
-- Pulls jobs from **multiple ATS** providers into one local database.
-- Filters postings by **search text, ATS, industry, state, county, and remote mode**.
-- Tracks **applied/ignored** posting state and application lifecycle status.
 <br>
-<img src="README-Images/apply_or_ignore.png" alt="Applications" width="25%" />
+<img src="README-Images/apply_or_ignore.png" alt="Apply or Ignore" width="25%" />
 <br>
 <img src="README-Images/applications.png" alt="Applications" width="70%" />
-- Stores applicant profile and MCP agent settings in SQLite.
-- Exposes MCP tools for **candidate selection, cover-letter drafting, and result recording.**
 
 ## Supported ATS
 
-Current sync support includes:
+| ATS | Companies |
+|-----|-----------|
+| Workday | ~12,000 |
+| Greenhouse | ~8,000 |
+| Lever | ~4,300 |
+| Ashby | ~3,100 |
+| UKG / UltiPro | ~900 |
+| iCIMS | ~750 |
+| Recruitee | ~600 |
+| Workable | 24 |
+| OracleCloud | 16 |
+| BambooHR | 3 |
 
-- `workday`
-- `ashby` / `ashbyhq`
-- `greenhouse` / `greenhouse.io`
-- `lever` / `lever.co`
-- `jobvite` / `jobvite.com`
-- `applicantpro` / `applicantpro.com`
-- `applytojob` / `applytojob.com`
-- `theapplicantmanager` / `theapplicantmanager.com`
-- `icims` / `icims.com`
-- `recruitee` / `recruitee.com`
-- `ultipro` / `ukg`
-- `taleo` / `taleo.net`
+## Features
 
-<br>
-<img src="README-Images/ATS_list.png" alt="Applications" width="70%" />
-
-About **+7748** companies in total. All gathered from search engine data like Google and DuckDuckGo. 
-<br>
-<img src="README-Images/company_amount.png" alt="Applications" width="25%" />
-<br>
-It pulls in new job data at random from companies and stores it in the database. If the posting has lasted longer than 24 hours in the database its no longer used/deleted. 
+- Pulls jobs from **10 ATS providers** into one local database
+- Filters postings by **search text, ATS, industry, state, and remote mode**
+- Tracks **applied/ignored** posting state and full application lifecycle
+- Stores applicant profile and MCP agent settings in SQLite
+- MCP tools for **candidate selection, cover-letter drafting, and result recording**
+- Runs on **Web, Android, and Windows** via React Native
 
 ## Requirements
 
@@ -64,105 +95,102 @@ It pulls in new job data at random from companies and stores it in the database.
 
 ## Installation
 
-```powershell
+```bash
 cd OpenPostings
 npm install
 ```
 
 ## Quick Start (Web)
 
-Terminal 1:
+Terminal 1 — start the API server (creates `jobs.db` on first run and begins syncing jobs):
 
-```powershell
-cd OpenPostings
+```bash
 npm run server
 ```
 
-Terminal 2:
+Terminal 2 — start the frontend:
 
-```powershell
-cd OpenPostings
+```bash
 npm run web
 ```
 
-Access the Web UI
-- `http://localhost:8081`
+- Web UI: `http://localhost:8081`
+- API: `http://localhost:8787`
+- Android emulator API: `http://10.0.2.2:8787`
 
-Default API base URL behavior:
-- Web/Windows: `http://localhost:8787`
-- Android emulator: `http://10.0.2.2:8787`
+## Windows / Android
 
-
-## You can run this Windows or Android as well!
-
-```powershell
-npm run windows (For windows)
-npm run android (For Android)
+```bash
+npm run windows
+npm run android
 ```
 
+## How the Database Works
 
-## REST API (Summary)
+The repo ships CSV seed files in `server/data/` containing company lists, industry categories, and location data. **No binary database file is committed to git.**
+
+On first `npm run server`:
+1. `jobs.db` is created automatically
+2. Seed tables are populated from the CSV files (companies, industries, locations)
+3. The sync cycle starts pulling live job postings from all companies
+4. Postings older than 24 hours are automatically pruned
+
+The database is local-only and can grow freely on your machine.
+
+## REST API
 
 Core:
-
 - `GET /health`
 - `GET /sync/status`
 - `POST /sync/ats` (`?wait=1` optional)
-- `POST /sync/workday` (alias route)
 
 Postings:
-
 - `GET /postings`
 - `GET /postings/filter-options`
 - `POST /postings/ignore`
 
 Applications:
-
 - `GET /applications`
 - `POST /applications`
 - `PATCH /applications/:id`
 - `DELETE /applications/:id`
 
 Settings:
-
 - `GET /settings/personal-information`
 - `PUT /settings/personal-information`
 - `GET /settings/mcp`
 - `PUT /settings/mcp`
 
 MCP helper endpoints:
-
 - `GET /mcp/candidates`
 - `POST /mcp/cover-letter-draft`
 - `POST /mcp/applications/complete`
 
-## MCP Apply Agent Server
+## MCP Apply Agent
 
-You can have Codex/Claude/Gemini/Qwen/LLMs do the following for you:
-- Get your applicantee information `get_applicant_context`
-- Find the latest relevant jobs for you. `find_posting_candidates`
-- Apply to those jobs (As long as your LLM model has access to a browser)
-- Build a dynamic cover letter for you that relates to your resume, experience and the job you are applying for. `draft_cover_letter`
-- Update job application tracking for you. `record_application_result`
+Let Claude, Codex, Gemini, or any LLM with MCP support:
+- Read your applicant profile — `get_applicant_context`
+- Find relevant fresh jobs — `find_posting_candidates`
+- Draft tailored cover letters — `draft_cover_letter`
+- Apply to jobs (with browser access)
+- Track application results — `record_application_result`
 
-To turn on the MCP server so your model can interact with OpenPostings run:
+Start the MCP server:
 
-```powershell
-cd OpenPostings
+```bash
 npm run mcp:apply-agent
 ```
 
-MCP server setup for your Codex (If you use a different LLM, ask it to setup an MCP setup for you):
-```
+MCP config example (for Codex / Claude Code):
+```json
 [mcp_servers.openpostings-apply]
 command = "node"
-args = ['C:\Users\<path to where you cloned the repo>\OpenPostings\server\mcp-apply-server.js']
+args = ["<path-to>/OpenPostings/server/mcp-apply-server.js"]
 ```
-
 
 ## Security Notes
 
 This is designed for local/self-hosted usage.
 
-- MCP credentials/settings are stored in local SQLite fields.
+- MCP credentials and settings are stored in local SQLite.
 - If you need stricter controls, add OS-level secret storage, DB encryption-at-rest, and tighter filesystem permissions.
