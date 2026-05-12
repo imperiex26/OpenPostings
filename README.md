@@ -1,5 +1,3 @@
-# OpenPostings
-
 <p align="center">
   <img src="logo-readme.svg" alt="OpenPostings" width="520" />
 </p>
