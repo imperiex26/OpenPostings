@@ -1,9 +1,7 @@
 # OpenPostings
 
 <p align="center">
-  <span style="font-size:3rem;font-weight:800;letter-spacing:-1px;">
-    <span style="color:#f0f0f0;">Open</span><span style="color:#10b981;">Postings</span>
-  </span>
+  <img src="logo-readme.svg" alt="OpenPostings" width="520" />
 </p>
 
 <p align="center">
