@@ -63,3 +63,8 @@ public/static/
 /db_*
 jobs.db-shm
 jobs.db-wal
+
+# Local tooling / scratch (do not commit)
+.claude/
+tmp_probe/
+*.bak
