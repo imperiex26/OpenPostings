@@ -5300,7 +5300,7 @@ async function getCompaniesForSync() {
     `
       SELECT id, company_name, url_string, ATS_name
       FROM companies
-      WHERE ATS_name IN ('WorkDay', 'AshbyHQ', 'GreenHouse', 'LeverCO', 'icims', 'recruitee', 'ultipro', 'OracleCloud', 'workable', 'bamboohr')
+      WHERE ATS_name IN ('WorkDay', 'AshbyHQ', 'GreenHouse', 'LeverCO', 'icims', 'recruitee', 'ultipro', 'OracleCloud', 'workable', 'bamboohr', 'zoho', 'freshteam', 'jobvite', 'personio', 'adp_workforcenow', 'paycomonline', 'smartrecruiters', 'eightfold', 'rippling')
       ORDER BY ATS_name ASC, company_name ASC;
     `
   );
