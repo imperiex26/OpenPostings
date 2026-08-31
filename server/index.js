@@ -31,8 +31,10 @@ const WORKABLE_API_URL_BASE = "https://apply.workable.com/api/v1/widget/accounts
 const WORKABLE_RATE_LIMIT_WAIT_MS = 60 * 1000;
 const ORACLECLOUD_RATE_LIMIT_WAIT_MS = 60 * 1000;
 const BAMBOOHR_RATE_LIMIT_WAIT_MS = 60 * 1000;
-const ZOHO_RATE_LIMIT_WAIT_MS = 60 * 1000;
-const FRESHTEAM_RATE_LIMIT_WAIT_MS = 60 * 1000;
+// Zoho & Freshteam support disabled: these ATSes expose no posting date and were removed
+// from the company list. Code retained (commented) for reference / future re-enable.
+// const ZOHO_RATE_LIMIT_WAIT_MS = 60 * 1000;
+// const FRESHTEAM_RATE_LIMIT_WAIT_MS = 60 * 1000;
 const JOBVITE_RATE_LIMIT_WAIT_MS = 60 * 1000;
 const PERSONIO_RATE_LIMIT_WAIT_MS = 60 * 1000;
 const ADP_WORKFORCENOW_RATE_LIMIT_WAIT_MS = 60 * 1000;
@@ -767,8 +769,9 @@ function inferAtsFromJobPostingUrl(value) {
   if (url.includes("oraclecloud.com/")) return "oraclecloud";
   if (url.includes("apply.workable.com/")) return "workable";
   if (url.includes(".bamboohr.com/careers")) return "bamboohr";
-  if (/\.zohorecruit\.(com|in|eu)/.test(url)) return "zoho";
-  if (url.includes(".freshteam.com")) return "freshteam";
+  // Zoho & Freshteam disabled (no posting date; companies removed from list).
+  // if (/\.zohorecruit\.(com|in|eu)/.test(url)) return "zoho";
+  // if (url.includes(".freshteam.com")) return "freshteam";
   if (url.includes("jobs.jobvite.com/") || url.includes("careers.jobvite.com/")) return "jobvite";
   if (/\.jobs\.personio\.(com|de)/.test(url)) return "personio";
   if (url.includes("workforcenow.adp.com")) return "adp_workforcenow";
@@ -1282,7 +1285,7 @@ function decodeHtmlEntities(value) {
 }
 
 // --------------- Shared string helpers (ported from upstream normalize-strings) ---------------
-// Used by the newer ATS collectors (zoho/freshteam/jobvite/personio/adp/paycom/smartrecruiters).
+// Used by the newer ATS collectors (jobvite/personio/adp/paycom/smartrecruiters).
 function stripHtml(value) {
   return String(value || "")
     .replace(/<[^>]+>/g, " ")
@@ -2641,6 +2644,12 @@ async function collectPostingsForBambooHrCompany(company) {
 // FETCH_TIMEOUT_MS + 429->sleep-retry pattern (NOT upstream's per-ATS queue).
 // ===================================================================================
 
+/* ===================================================================================
+ * Zoho Recruit & Freshteam collectors DISABLED.
+ * These ATSes expose no posting date, so their listings can never satisfy the 48h
+ * freshness filter; their companies were removed from companies.csv. Code retained
+ * (commented) for reference and easy re-enable.
+ * ===================================================================================
 // ----------------------------- Zoho Recruit -----------------------------
 function parseZohoCompany(urlString) {
   const parsed = parseUrl(urlString);
@@ -2736,6 +2745,9 @@ function parseZohoPostingsFromHtml(companyNameForPostings, config, pageHtml) {
     const state = cleanZohoText(job?.State);
     const country = cleanZohoText(job?.Country);
     const location = [city, state, country].filter(Boolean).join(", ") || null;
+    // Zoho Recruit does not expose a posting date: the embedded jobs payload omits
+    // Date_Opened entirely, and the per-job page is JS-rendered with no static date
+    // or JSON-LD. Date_Opened is read defensively in case a tenant ever includes it.
     const postingDate = cleanZohoText(job?.Date_Opened);
     postings.push({
       company_name: companyNameForPostings,
@@ -2835,6 +2847,9 @@ function parseFreshteamPostingsFromHtml(companyNameForPostings, config, pageHtml
     postings.push({
       company_name: companyNameForPostings,
       position_name: title,
+      // Freshteam exposes no posting date on the listing card or the per-job page
+      // (no static date, no JSON-LD). The date is genuinely unavailable; the read-time
+      // freshness filter falls back to first_seen_epoch for these rows.
       job_posting_url: absoluteUrl,
       posting_date: null,
       location: location || locationInfo || null
@@ -2889,6 +2904,7 @@ async function collectPostingsForFreshteamCompany(company) {
   };
   return parseFreshteamPostingsFromHtml(companyNameForPostings, parseConfig, pageHtml);
 }
+ * =================================================================================== */
 
 // ----------------------------- Jobvite -----------------------------
 function parseJobviteCompany(urlString) {
@@ -3718,6 +3734,9 @@ function parseRipplingPostingsFromApi(companyNameForPostings, config, responseJs
     const itemUrlRaw = String(item?.url || "").trim();
     const jobUrl = itemUrlRaw || (postingId ? `${config.boardUrl}/${postingId}` : "");
     if (!jobUrl || seenUrls.has(jobUrl)) continue;
+    // The v2 board list endpoint does not include a date; these fields are read
+    // defensively in case a future API revision adds them. The real date is
+    // backfilled from the per-job detail endpoint (createdOn) in the collector.
     const postingDate =
       String(item?.postedAt || item?.createdAt || item?.updatedAt || item?.publishedAt || "").trim() || null;
     postings.push({
@@ -3760,6 +3779,38 @@ async function fetchRipplingJobsPage(config, page = 0, pageSize = 100) {
   }
 }
 
+// Rippling's board list API (/api/v2/board/{slug}/jobs) carries NO posting date;
+// the date lives only on the per-job detail endpoint as `createdOn` (ISO-8601).
+// Mirror the Ashby/Workable pattern: fetch detail only for India postings to keep
+// the request count proportional to what this fork actually serves.
+function extractRipplingPostingId(jobUrl) {
+  const parsed = parseUrl(jobUrl);
+  if (!parsed) return "";
+  const parts = String(parsed.pathname || "").split("/").map((p) => String(p || "").trim()).filter(Boolean);
+  return parts.length > 0 ? parts[parts.length - 1] : "";
+}
+
+async function fetchRipplingPostedDate(config, postingId) {
+  const id = String(postingId || "").trim();
+  if (!id) return null;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${config.apiUrl}/${encodeURIComponent(id)}`, {
+      method: "GET",
+      headers: { Accept: "application/json, text/plain, */*" },
+      signal: controller.signal
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return String(data?.createdOn || data?.postedAt || data?.publishedAt || "").trim() || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function collectPostingsForRipplingCompany(company) {
   const config = parseRipplingCompany(company.url_string);
   if (!config) return [];
@@ -3782,6 +3833,29 @@ async function collectPostingsForRipplingCompany(company) {
     if (page + 1 >= totalPages) break;
     if (batch.length < pageSize) break;
   }
+
+  // Backfill real posting dates for India postings via the per-job detail endpoint.
+  const indiaPostingIndices = [];
+  for (let i = 0; i < collected.length; i += 1) {
+    if (collected[i].posting_date) continue;
+    if (looksLikeIndiaLocation(collected[i].location)) {
+      const postingId = extractRipplingPostingId(collected[i].job_posting_url);
+      if (postingId) indiaPostingIndices.push({ index: i, postingId });
+    }
+  }
+  const DETAIL_BATCH_SIZE = 5;
+  for (let i = 0; i < indiaPostingIndices.length; i += DETAIL_BATCH_SIZE) {
+    const batch = indiaPostingIndices.slice(i, i + DETAIL_BATCH_SIZE);
+    const results = await Promise.allSettled(
+      batch.map((item) => fetchRipplingPostedDate(config, item.postingId))
+    );
+    for (let j = 0; j < results.length; j += 1) {
+      if (results[j].status === "fulfilled" && results[j].value) {
+        collected[batch[j].index].posting_date = results[j].value;
+      }
+    }
+  }
+
   return collected;
 }
 
@@ -3817,12 +3891,13 @@ async function collectPostingsForCompany(company) {
   if (atsName === "bamboohr") {
     return collectPostingsForBambooHrCompany(company);
   }
-  if (atsName === "zoho" || atsName === "zohorecruit" || atsName === "zohorecruit.com") {
-    return collectPostingsForZohoCompany(company);
-  }
-  if (atsName === "freshteam" || atsName === "freshteam.com") {
-    return collectPostingsForFreshteamCompany(company);
-  }
+  // Zoho & Freshteam disabled (no posting date; companies removed from list).
+  // if (atsName === "zoho" || atsName === "zohorecruit" || atsName === "zohorecruit.com") {
+  //   return collectPostingsForZohoCompany(company);
+  // }
+  // if (atsName === "freshteam" || atsName === "freshteam.com") {
+  //   return collectPostingsForFreshteamCompany(company);
+  // }
   if (atsName === "jobvite" || atsName === "jobvite.com") {
     return collectPostingsForJobviteCompany(company);
   }
@@ -5300,7 +5375,7 @@ async function getCompaniesForSync() {
     `
       SELECT id, company_name, url_string, ATS_name
       FROM companies
-      WHERE ATS_name IN ('WorkDay', 'AshbyHQ', 'GreenHouse', 'LeverCO', 'icims', 'recruitee', 'ultipro', 'OracleCloud', 'workable', 'bamboohr', 'zoho', 'freshteam', 'jobvite', 'personio', 'adp_workforcenow', 'paycomonline', 'smartrecruiters', 'eightfold', 'rippling')
+      WHERE ATS_name IN ('WorkDay', 'AshbyHQ', 'GreenHouse', 'LeverCO', 'icims', 'recruitee', 'ultipro', 'OracleCloud', 'workable', 'bamboohr', 'jobvite', 'personio', 'adp_workforcenow', 'paycomonline', 'smartrecruiters', 'eightfold', 'rippling')
       ORDER BY ATS_name ASC, company_name ASC;
     `
   );
@@ -5981,10 +6056,11 @@ if (require.main === module) {
   module.exports = {
     inferAtsFromJobPostingUrl,
     collectPostingsForCompany,
-    parseZohoCompany,
-    collectPostingsForZohoCompany,
-    parseFreshteamCompany,
-    collectPostingsForFreshteamCompany,
+    // Zoho & Freshteam disabled (no posting date; companies removed from list).
+    // parseZohoCompany,
+    // collectPostingsForZohoCompany,
+    // parseFreshteamCompany,
+    // collectPostingsForFreshteamCompany,
     parseJobviteCompany,
     collectPostingsForJobviteCompany,
     parsePersonioCompany,

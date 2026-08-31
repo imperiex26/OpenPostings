@@ -29,7 +29,8 @@
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
-    "@rnx-kit/jest-preset": "^0.1.17"
+    "@rnx-kit/jest-preset": "^0.1.17",
+    "playwright": "^1.62.1"
   },
   "react-native-windows": {
     "init-windows": {
